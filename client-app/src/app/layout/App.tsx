@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-
-import axios from "axios";
 import { Container } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import AppointmentDashBoard from "../../features/appointments/dashboard/AppointmentDashBoard";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from "uuid";
+import agent from "../api/agent";
+import LoadingComponent from "./LoadingComponent";
 
 function App() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -12,13 +12,19 @@ function App() {
     Appointment | undefined
   >(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    axios
-      .get<Appointment[]>("http://localhost:5000/api/appointments")
-      .then((response) => {
-        setAppointments(response.data);
+    agent.Appointments.list().then((response) => {
+      let appointments: Appointment[] = [];
+      response.forEach((appointment) => {
+        appointment.dateOfIssue = appointment.dateOfIssue.split("T")[0];
+        appointments.push(appointment);
       });
+      setAppointments(appointments);
+      setLoading(false);
+    });
   }, []);
 
   function handleSelectAppointment(id: string) {
@@ -39,18 +45,38 @@ function App() {
   }
 
   function handleCreateOrEditAppointment(appointment: Appointment) {
-    appointment.id
-      ? setAppointments([
+    setSubmitting(true);
+    if (appointment.id) {
+      agent.Appointments.update(appointment).then(() => {
+        setAppointments([
           ...appointments.filter((x) => x.id !== appointment.id),
           appointment,
-        ])
-      : setAppointments([...appointments, {...appointment, id: uuid()}]);
-      setEditMode(false);
+        ]);
+        setSelectedAppointment(appointment);
+        setEditMode(false);
+        setSubmitting(false);
+      });
+    } else {
+      appointment.id = uuid();
+      agent.Appointments.create(appointment).then(() => {
+        setAppointments([...appointments, appointment]);
+      });
       setSelectedAppointment(appointment);
+      setEditMode(false);
+      setSubmitting(false);
+    }
   }
 
   function handleDeleteAppointment(id: string) {
-    setAppointments([...appointments.filter(x => x.id !== id)]);
+    setSubmitting(true);
+    agent.Appointments.delete(id).then(() => {
+      setAppointments([...appointments.filter((x) => x.id !== id)]);
+      setSubmitting(false);
+    });
+  }
+
+  if (loading) {
+    return <LoadingComponent content="Loading app..." />;
   }
   return (
     <>
@@ -66,6 +92,7 @@ function App() {
           closeForm={handleFormClose}
           createOrEdit={handleCreateOrEditAppointment}
           deleteAppointment={handleDeleteAppointment}
+          submitting={submitting}
         />
       </Container>
     </>

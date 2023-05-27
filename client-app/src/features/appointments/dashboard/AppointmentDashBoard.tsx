@@ -14,6 +14,7 @@ interface Props {
   closeForm: () => void;
   createOrEdit: (appointment: Appointment) => void;
   deleteAppointment: (id: string) => void;
+  submitting: boolean;
 }
 
 export default function AppointmentDashBoard({
@@ -26,6 +27,7 @@ export default function AppointmentDashBoard({
   closeForm,
   createOrEdit,
   deleteAppointment,
+  submitting,
 }: Props) {
   return (
     <Grid>
@@ -34,13 +36,14 @@ export default function AppointmentDashBoard({
           appointments={appointments}
           selectAppointment={selectAppointment}
           deleteAppointment={deleteAppointment}
+          submitting={submitting}
         />
       </Grid.Column>
       <Grid.Column width="6">
         {selectedAppointment && !editMode && (
           <AppointmentDetails appointment={selectedAppointment} cancelSelectAppointment={cancelSelectAppointment} openForm={openForm} />
         )}
-        {editMode && <AppointmentForm closeForm={closeForm} appointment={selectedAppointment} createOrEdit={createOrEdit} />}
+        {editMode && <AppointmentForm closeForm={closeForm} appointment={selectedAppointment} createOrEdit={createOrEdit} submitting={submitting} />}
         
       </Grid.Column>
     </Grid>

@@ -1,7 +1,7 @@
 interface Appointment {
     id: string;
-    patiendId: string;
-    doctorId: string;
+    patiendId: number;
+    doctorId: number;
     dateOfIssue: string;
     description: string;
   }
