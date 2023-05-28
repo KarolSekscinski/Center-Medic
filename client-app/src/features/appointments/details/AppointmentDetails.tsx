@@ -1,13 +1,17 @@
 import React from "react";
 import { Button, Card} from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
-interface Props {
-  appointment: Appointment;
-  cancelSelectAppointment: () => void;
-  openForm: (id: string) => void;
-}
 
-export default function AppointmentDetails({ appointment, cancelSelectAppointment, openForm }: Props) {
+
+export default function AppointmentDetails() {
+
+  const {appointmentStore} = useStore();
+  const {selectedAppointment: appointment, openForm, cancelSelectedAppointment} = appointmentStore;
+
+  if (!appointment) return <LoadingComponent />;
+
   return (
     <Card fluid>
       <Card.Content>
@@ -20,7 +24,7 @@ export default function AppointmentDetails({ appointment, cancelSelectAppointmen
       <Card.Content extra>
         <Button.Group widths="2">
           <Button onClick={() => openForm(appointment.id)} basic color="blue" content="Edytuj" />
-          <Button onClick={cancelSelectAppointment} basic color="grey" content="Anuluj" />
+          <Button onClick={cancelSelectedAppointment} basic color="grey" content="Anuluj" />
         </Button.Group>
       </Card.Content>
     </Card>

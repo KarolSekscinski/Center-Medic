@@ -1,19 +1,13 @@
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  appointment: Appointment | undefined;
-  closeForm: () => void;
-  createOrEdit: (appointment: Appointment) => void;
-  submitting: boolean;
-}
 
-export default function AppointmentForm({
-  appointment: selectedAppointment,
-  closeForm,
-  createOrEdit,
-  submitting,
-}: Props) {
+
+export default observer(function AppointmentForm() {
+  const {appointmentStore} = useStore();
+  const {closeForm, selectedAppointment, createAppointment, updateAppointment, loading} = appointmentStore;
   const initialState = selectedAppointment ?? {
     id: "",
     description: "",
@@ -25,7 +19,7 @@ export default function AppointmentForm({
   const [appointment, setAppointment] = useState(initialState);
 
   function handleSubmit() {
-    createOrEdit(appointment);
+    appointment.id ? updateAppointment(appointment) : createAppointment(appointment)
   }
 
   function handleInputChange(
@@ -51,7 +45,7 @@ export default function AppointmentForm({
           name="dateOfIssue"
           onChange={handleInputChange}
         />
-        <Button loading={submitting} floated="right" positive type="submit" content="Zatwierdź" />
+        <Button loading={loading} floated="right" positive type="submit" content="Zatwierdź" />
         <Button
           onClick={closeForm}
           floated="right"
@@ -61,4 +55,4 @@ export default function AppointmentForm({
       </Form>
     </Segment>
   );
-}
+}) 
