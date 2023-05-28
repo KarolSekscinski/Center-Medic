@@ -2,10 +2,11 @@ import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
 
 export default observer(function AppointmentList() {
   const { appointmentStore } = useStore();
-  const {loading, deleteAppointment, appointmentsByDate} = appointmentStore;
+  const { loading, deleteAppointment, appointmentsByDate } = appointmentStore;
   const [target, setTarget] = useState("");
 
   function handleAppointmentDelete(
@@ -15,7 +16,7 @@ export default observer(function AppointmentList() {
     setTarget(e.currentTarget.name);
     deleteAppointment(id);
   }
-  
+
   return (
     <Segment>
       <Item.Group divided>
@@ -32,9 +33,8 @@ export default observer(function AppointmentList() {
               </Item.Description>
               <Item.Extra>
                 <Button
-                  onClick={() =>
-                    appointmentStore.selectAppointment(appointment.id)
-                  }
+                  as={Link}
+                  to={`/appointments/${appointment.id}`}
                   floated="right"
                   content="Zobacz szczegóły"
                   color="blue"

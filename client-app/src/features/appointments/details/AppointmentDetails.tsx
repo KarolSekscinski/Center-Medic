@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Card} from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { observer } from "mobx-react-lite";
+import { Link, useParams } from "react-router-dom";
 
 
 
-export default function AppointmentDetails() {
+export default observer(function AppointmentDetails() {
 
   const {appointmentStore} = useStore();
-  const {selectedAppointment: appointment, openForm, cancelSelectedAppointment} = appointmentStore;
+  const {selectedAppointment: appointment, loadAppointment, loadingInitial} = appointmentStore;
+  const {id} = useParams();
 
-  if (!appointment) return <LoadingComponent />;
+  useEffect(() => {
+    if (id) loadAppointment(id); 
+  },[id, loadAppointment])
+
+  if (loadingInitial || !appointment) return <LoadingComponent />;
 
   return (
     <Card fluid>
@@ -23,10 +30,10 @@ export default function AppointmentDetails() {
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths="2">
-          <Button onClick={() => openForm(appointment.id)} basic color="blue" content="Edytuj" />
-          <Button onClick={cancelSelectedAppointment} basic color="grey" content="Anuluj" />
+          <Button as={Link} to={`/manage/${appointment.id}`} basic color="blue" content="Edytuj" />
+          <Button as={Link} to='/appointments' basic color="grey" content="Anuluj" />
         </Button.Group>
       </Card.Content>
     </Card>
   );
-}
+}) 

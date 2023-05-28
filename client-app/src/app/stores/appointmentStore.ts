@@ -7,7 +7,7 @@ export default class AppointmentStore {
   selectedAppointment: Appointment | undefined = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = true;
+  loadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,15 +20,14 @@ export default class AppointmentStore {
   }
 
   loadAppointments = async () => {
+    this.setLoadingInitial(true);
     try {
       const appointments = await agent.Appointments.list();
 
       appointments.forEach((appointment) => {
-        appointment.dateOfIssue = appointment.dateOfIssue.split("T")[0];
-        this.appointmentRegistry.set(appointment.id, appointment);
-
-        this.setLoadingInitial(false);
+        this.setAppointment(appointment);
       });
+      this.setLoadingInitial(false);
     } catch (error) {
       console.log(error);
 
@@ -36,25 +35,44 @@ export default class AppointmentStore {
     }
   };
 
+  loadAppointment = async (id: string) => {
+    let appointment = this.getAppointment(id);
+    if (appointment) {
+      this.selectedAppointment = appointment;
+      return appointment;
+    } 
+    else {
+      this.setLoadingInitial(true);
+      try {
+        appointment = await agent.Appointments.details(id);
+        this.setAppointment(appointment);
+        runInAction(() => {
+          this.selectedAppointment = appointment;
+        })
+        
+        this.setLoadingInitial(false);
+        return appointment;
+      } catch (error) {
+        console.log(error);
+        this.setLoadingInitial(false);
+      }
+    }
+  };
+
+  private setAppointment = (appointment: Appointment) => {
+    appointment.dateOfIssue = appointment.dateOfIssue.split("T")[0];
+    this.appointmentRegistry.set(appointment.id, appointment);
+  };
+
+  private getAppointment = (id: string) => {
+    return this.appointmentRegistry.get(id);
+  };
+
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   };
 
-  selectAppointment = (id: string) => {
-    this.selectedAppointment = this.appointmentRegistry.get(id);
-  };
 
-  cancelSelectedAppointment = () => {
-    this.selectedAppointment = undefined;
-  };
-
-  openForm = (id?: string) => {
-    id ? this.selectAppointment(id) : this.cancelSelectedAppointment();
-    this.editMode = true;
-  };
-  closeForm = () => {
-    this.editMode = false;
-  };
 
   createAppointment = async (appointment: Appointment) => {
     this.loading = true;
@@ -96,9 +114,6 @@ export default class AppointmentStore {
       await agent.Appointments.delete(id);
       runInAction(() => {
         this.appointmentRegistry.delete(id);
-        if (this.selectedAppointment?.id === id) {
-          this.cancelSelectedAppointment();
-        }
         this.loading = false;
       });
     } catch (error) {

@@ -1,28 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container } from "semantic-ui-react";
 import NavBar from "./NavBar";
-import AppointmentDashBoard from "../../features/appointments/dashboard/AppointmentDashBoard";
-
-import LoadingComponent from "./LoadingComponent";
-import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
+import { Outlet, useLocation } from "react-router-dom";
+import HomePage from "../../features/home/HomePage";
 
 function App() {
-  const { appointmentStore } = useStore();
+  const locaction = useLocation();
 
-  useEffect(() => {
-    appointmentStore.loadAppointments();
-  }, [appointmentStore]);
-
-  if (appointmentStore.loadingInitial) {
-    return <LoadingComponent content="Loading app..." />;
-  }
   return (
     <>
-      <NavBar />
-      <Container style={{ marginTop: "7em" }}>
-        <AppointmentDashBoard />
-      </Container>
+      {locaction.pathname === "/" ? (
+        <HomePage />
+      ) : (
+        <>
+          <NavBar />
+          <Container style={{ marginTop: "7em" }}>
+            <Outlet />
+          </Container>
+        </>
+      )}
     </>
   );
 }
