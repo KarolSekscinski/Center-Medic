@@ -17,6 +17,7 @@ export default observer(function NavBar() {
           Medic Center
         </Menu.Item>
         <Menu.Item name="Wizyty" as={NavLink} to="/appointments" />
+        <Menu.Item name="Errors" as={NavLink} to="/errors" />
         <Menu.Item as={NavLink} to="/createAppointment">
           <Button
             positive

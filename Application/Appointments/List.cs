@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,9 @@ namespace Application.Appointments
 {
     public class List
     {
-        public class Query : IRequest<List<Appointment>> {}
+        public class Query : IRequest<Result<List<Appointment>>> {}
 
-        public class Handler : IRequestHandler<Query, List<Appointment>>
+        public class Handler : IRequestHandler<Query, Result<List<Appointment>>>
         {
             private readonly DataContext _context;
             
@@ -25,10 +26,10 @@ namespace Application.Appointments
             
             }
 
-            public async Task<List<Appointment>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Appointment>>> Handle(Query request, CancellationToken cancellationToken)
             {
+                return Result<List<Appointment>>.Success(await _context.Appointments.ToListAsync(cancellationToken));
                 
-                return await _context.Appointments.ToListAsync();
             }
         }
     }

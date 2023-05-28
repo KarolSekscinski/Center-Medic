@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Core;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -11,11 +13,20 @@ namespace Application.Appointments
 {
     public class Edit
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Appointment Appointment { get; set; }
         }
-        public class Handler : IRequestHandler<Command>
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Appointment).SetValidator(new AppointmentValidator());
+            }
+        }
+
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -29,15 +40,19 @@ namespace Application.Appointments
 
             
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var appointment = await _context.Appointments.FindAsync(request.Appointment.Id);
 
+                if (appointment == null) return null;
+
                 _mapper.Map(request.Appointment, appointment);
 
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
 
-                return Unit.Value;
+                if (!result) return Result<Unit>.Failure("Failed to update appointment");
+                
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }
