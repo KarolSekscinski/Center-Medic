@@ -19,6 +19,14 @@ export default class AppointmentStore {
     );
   }
 
+  get groupedAppointments() {
+    return Object.entries(this.appointmentsByDate.reduce((appointments, appointment) => {
+      const date = appointment.dateOfIssue;
+      appointments[date] = appointments[date] ? [...appointments[date], appointment] : [appointment];
+      return appointments;
+    }, {} as {[key: string]: Appointment[]}))
+  }
+
   loadAppointments = async () => {
     this.setLoadingInitial(true);
     try {

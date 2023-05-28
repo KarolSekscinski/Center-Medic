@@ -4,6 +4,7 @@ import AppointmentList from "./AppointmentList";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import AppointmentFilters from "./AppointmentFilters";
 
 
 
@@ -25,7 +26,7 @@ export default observer(function AppointmentDashBoard() {
         <AppointmentList />
       </Grid.Column>
       <Grid.Column width="6">
-        <h2>Filtry wizyt</h2>
+        <AppointmentFilters />
       </Grid.Column>
     </Grid>
   );
