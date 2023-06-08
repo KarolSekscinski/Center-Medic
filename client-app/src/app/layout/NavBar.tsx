@@ -10,7 +10,7 @@ export default observer(function NavBar() {
       <Container>
         <Menu.Item as={NavLink} to="/" header>
           <img
-            src="/assets/logo.png"
+            src="/assets/logo1.png"
             alt="logo"
             style={{ marginRight: "10px" }}
           />
