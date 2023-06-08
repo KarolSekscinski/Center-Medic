@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
+import { User, UserFormValues } from "../models/user";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -55,6 +56,14 @@ axios.interceptors.response.use(
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
+axios.interceptors.request.use((config) => {
+  const token = store.commonStore.token;
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 const request = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
   post: <T>(url: string, body: {}) =>
@@ -73,8 +82,15 @@ const Appointments = {
   delete: (id: string) => axios.delete<void>(`/appointments/${id}`),
 };
 
+const Account = {
+  current: () => request.get<User>("/account"),
+  login: (user: UserFormValues) => request.post<User>("/account/login", user),
+  register: (user: UserFormValues) => request.post<User>("/account/register", user),
+};
+
 const agent = {
   Appointments,
+  Account,
 };
 
 export default agent;

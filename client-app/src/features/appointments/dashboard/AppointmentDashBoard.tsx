@@ -17,7 +17,7 @@ export default observer(function AppointmentDashBoard() {
   }, [loadAppointments, appointmentRegistry.size]);
 
   if (appointmentStore.loadingInitial) {
-    return <LoadingComponent content="Loading app..." />;
+    return <LoadingComponent content="Ładowanie wizyt..." />;
   }
 
   return (
