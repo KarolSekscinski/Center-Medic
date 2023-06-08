@@ -2,6 +2,6 @@ interface Appointment {
     id: string;
     patiendId: number;
     doctorId: number;
-    dateOfIssue: string;
+    dateOfIssue: Date | null;
     description: string;
   }

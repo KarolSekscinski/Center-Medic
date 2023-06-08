@@ -1,5 +1,7 @@
+import { format } from "date-fns";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button, Header, Item, Segment, Image } from "semantic-ui-react";
 
 
@@ -36,7 +38,7 @@ export default observer(function ActivityDetailedHeader({
                   content={`Wizyta`}
                   style={{ color: "white" }}
                 />
-                <p>{appointment.dateOfIssue}</p>
+                <p>{format(appointment.dateOfIssue!, 'dd MMM yyyy')}</p>
                 <p>
                   {`Lekarz: ${appointment.doctorId}`}
                 </p>
@@ -48,7 +50,7 @@ export default observer(function ActivityDetailedHeader({
       <Segment clearing attached="bottom">
         <Button color="teal">Join Activity</Button>
         <Button>Odwołaj wizytę</Button>
-        <Button color="orange" floated="right">
+        <Button as={Link} to={`/manage/${appointment.id}`} color="orange" floated="right">
           Zarządzaj wizytą
         </Button>
       </Segment>

@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Segment } from "semantic-ui-react";
@@ -17,7 +18,7 @@ export default function AppointmentListItem({ appointment }: Props) {
             <Item.Image size="tiny" circular src="/assets/user.png" />
             <Item.Content>
               <Item.Header as={Link} to={`/appointments/${appointment.id}`}>
-                {`Wizyta ${appointment.dateOfIssue}`}
+                {`Wizyta ${format(appointment.dateOfIssue!, 'dd MMM yyyy h:mm aa')}`}
               </Item.Header>
               <Item.Description>{`Lekarz: ${appointment.doctorId}`}</Item.Description>
             </Item.Content>
@@ -26,7 +27,7 @@ export default function AppointmentListItem({ appointment }: Props) {
       </Segment>
       <Segment>
         <span>
-          <Icon name="clock" /> {appointment.dateOfIssue}
+          <Icon name="clock" /> {format(appointment.dateOfIssue!, 'dd MMM yyyy h:mm aa')}
           <Icon name="marker" /> Numer Sali
         </span>
       </Segment>

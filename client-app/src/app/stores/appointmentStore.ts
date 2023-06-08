@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { v4 as uuid } from "uuid";
+import { format } from "date-fns";
 
 export default class AppointmentStore {
   appointmentRegistry = new Map<string, Appointment>();
@@ -15,13 +16,13 @@ export default class AppointmentStore {
 
   get appointmentsByDate() {
     return Array.from(this.appointmentRegistry.values()).sort(
-      (a, b) => Date.parse(a.dateOfIssue) - Date.parse(b.dateOfIssue)
+      (a, b) => a.dateOfIssue!.getTime() - b.dateOfIssue!.getTime()
     );
   }
 
   get groupedAppointments() {
     return Object.entries(this.appointmentsByDate.reduce((appointments, appointment) => {
-      const date = appointment.dateOfIssue;
+      const date = format(appointment.dateOfIssue!, 'dd MMM yyyy');
       appointments[date] = appointments[date] ? [...appointments[date], appointment] : [appointment];
       return appointments;
     }, {} as {[key: string]: Appointment[]}))
@@ -68,7 +69,7 @@ export default class AppointmentStore {
   };
 
   private setAppointment = (appointment: Appointment) => {
-    appointment.dateOfIssue = appointment.dateOfIssue.split("T")[0];
+    appointment.dateOfIssue = new Date(appointment.dateOfIssue!);
     this.appointmentRegistry.set(appointment.id, appointment);
   };
 
