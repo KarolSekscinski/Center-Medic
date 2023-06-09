@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Profiles;
 
-namespace Domain
+namespace Application.Appointments
 {
-    public class Appointment
+    public class AppointmentDto
     {
         public Guid Id { get; set; }
 
@@ -14,11 +14,12 @@ namespace Domain
 
         public string Description { get; set; }
 
+        public string DoctorUsername { get; set; }
+
         public bool isCancelled { get; set; }
 
         public bool isDone { get; set; }
 
-        public ICollection<AppointmentAttendee> Attendees { get; set; } = new List<AppointmentAttendee>();
-
+        public ICollection<Profile> Attendees { get; set; }
     }
 }

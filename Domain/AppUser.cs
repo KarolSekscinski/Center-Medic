@@ -9,6 +9,20 @@ namespace Domain
     public class AppUser : IdentityUser
     {
         public string DisplayName { get; set; }
+
+        public string Name { get; set; }
+
+        public string Surname { get; set; }
+
+        public string Specialization { get; set; }
+
+        public string Pesel { get; set; }
+
+        public string Sex { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        public ICollection<AppointmentAttendee> Appointments { get; set; }
         
     }
 }
