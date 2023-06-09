@@ -39,6 +39,8 @@ namespace API.Extensions
                         ValidateAudience = false,
                     };
                 });
+
+
             services.AddAuthorization(opt =>
             {
                 opt.AddPolicy("IsAppointmentDoctor", policy =>
@@ -47,6 +49,16 @@ namespace API.Extensions
                 });
             });
             services.AddTransient<IAuthorizationHandler, IsDoctorRequirementHandler>();
+
+            // services.AddAuthorization(opt =>
+            // {
+            //     opt.AddPolicy("IsPrescriptionDoctor", policy =>
+            //     {
+            //         policy.Requirements.Add(new IsDoctorRequirementP());
+            //     });
+            // });
+            // services.AddTransient<IAuthorizationHandler, IsDoctorRequirementPHandler>();
+
             services.AddScoped<TokenService>();
             return services;
         }

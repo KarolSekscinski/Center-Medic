@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Appointments
+namespace Application.Prescriptions
 {
     public class UpdateAttendance
     {
@@ -27,41 +27,40 @@ namespace Application.Appointments
                 _context = context;
                 
             }
-            
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var appointment = await _context.Appointments
+                var prescription = await _context.Prescriptions
                     .Include(x => x.Attendees)
                     .ThenInclude(x => x.AppUser)
                     .FirstOrDefaultAsync(x => x.Id == request.Id);
-                if (appointment == null) return null;
+                if (prescription == null) return null;
 
                 var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
+                    .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
 
                 if (user == null) return null;
 
-                var DoctorUsername = appointment.Attendees.FirstOrDefault(x => x.IsDoctor)?.AppUser?.UserName;
-
-                var attendance = appointment.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
+                var DoctorUsername = prescription.Attendees.FirstOrDefault(x => x.IsDoctor)?.AppUser?.UserName;
+            
+                var attendance = prescription.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
 
                 if (attendance != null && DoctorUsername == user.UserName)
-                    appointment.isCancelled = !appointment.isCancelled;
+                    prescription.Status = "Approved";
                 if (attendance != null && DoctorUsername != user.UserName)
-                    appointment.Attendees.Remove(attendance);
+                    prescription.Status = "Pending";
                 if (attendance == null)
                 {
-                    attendance = new AppointmentAttendee
+                    attendance = new PrescriptionAttendee
                     {
                         AppUser = user,
-                        Appointment = appointment,
-                        IsDoctor = false,
+                        Prescription = prescription,
+                        IsDoctor = false,         
                     };
-                    appointment.Attendees.Add(attendance);
+                    prescription.Attendees.Add(attendance);
                 }
                 var result = await _context.SaveChangesAsync() > 0;
 
-                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating attendance - appointment");
+                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating attendance - prescription");
             }
         }
     }

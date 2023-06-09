@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class AppointmentAttendee
+    public class PrescriptionAttendee
     {
         public string AppUserId { get; set; }
 
         public AppUser AppUser { get; set; }
 
-        public Guid AppointmentId { get; set; }
+        public Guid PrescriptionId { get; set; }
 
-        public Appointment Appointment { get; set; }
+        public Prescription Prescription { get; set; }
 
         public bool IsDoctor { get; set; }
-
     }
 }

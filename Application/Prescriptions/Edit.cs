@@ -9,47 +9,47 @@ using FluentValidation;
 using MediatR;
 using Persistence;
 
-namespace Application.Appointments
+namespace Application.Prescriptions
 {
     public class Edit
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Appointment Appointment { get; set; }
+            public Prescription Prescription { get; set; }
         }
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.Appointment).SetValidator(new AppointmentValidator());
+                RuleFor(x => x.Prescription).SetValidator(new PrescriptionValidator());
             }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
-
             private readonly IMapper _mapper;
 
             public Handler(DataContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
+                
             }
-
+            
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var appointment = await _context.Appointments.FindAsync(request.Appointment.Id);
+                var prescription = await _context.Prescriptions.FindAsync(request.Prescription.Id);
 
-                if (appointment == null) return null;
+                if (prescription == null) return null;
 
-                _mapper.Map(request.Appointment, appointment);
+                _mapper.Map(request.Prescription, prescription);
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to update appointment");
-                
+                if (!result) return Result<Unit>.Failure("Failed to update prescription");
+
                 return Result<Unit>.Success(Unit.Value);
             }
         }

@@ -23,6 +23,8 @@ namespace Domain
         public DateTime? DateOfBirth { get; set; }
 
         public ICollection<AppointmentAttendee> Appointments { get; set; }
+
+        public ICollection<PrescriptionAttendee> Prescriptions { get; set; }
         
     }
 }

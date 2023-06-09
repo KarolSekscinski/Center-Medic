@@ -86,7 +86,7 @@ namespace Persistence
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
 
-                var activities = new List<Appointment>
+                var appointments = new List<Appointment>
                 {
                     new Appointment
                     {
@@ -270,8 +270,102 @@ namespace Persistence
                         }
                     }
                 };
+                var prescriptions = new List<Prescription>
+                {
+                    new Prescription
+                    {
+                        DateOfIssue = DateTime.UtcNow.AddMonths(-2),
+                        Description = "Prescription 2 months ago",
+                        Attendees = new List<PrescriptionAttendee>
+                        {
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[0],
+                                IsDoctor = true
+                            },
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[5],
+                                IsDoctor = false
+                            },
+                        }
+                    },
+                    new Prescription
+                    {
+                        DateOfIssue = DateTime.UtcNow.AddMonths(-1),
+                        Description = "Prescription 1 month ago",
+                        Attendees = new List<PrescriptionAttendee>
+                        {
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[0],
+                                IsDoctor = true
+                            },
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[4],
+                                IsDoctor = false
+                            },
+                        }
+                    },
+                    new Prescription
+                    { 
+                        DateOfIssue = DateTime.UtcNow.AddMonths(1),
+                        Description = "Prescription 1 month in future",
+                        Attendees = new List<PrescriptionAttendee>
+                        {
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[2],
+                                IsDoctor = true
+                            },
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[3],
+                                IsDoctor = false
+                            },
+                        }
+                    },
+                    new Prescription
+                    {    
+                        DateOfIssue = DateTime.UtcNow.AddMonths(2),
+                        Description = "Prescription 2 months in future",
+                        Attendees = new List<PrescriptionAttendee>
+                        {
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[0],
+                                IsDoctor = true
+                            },
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[5],
+                                IsDoctor = false
+                            },
+                        }
+                    },
+                    new Prescription
+                    {
+                        DateOfIssue = DateTime.UtcNow.AddMonths(3),
+                        Description = "Prescription 3 months in future",
+                        Attendees = new List<PrescriptionAttendee>
+                        {
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[1],
+                                IsDoctor = true                            
+                            },
+                            new PrescriptionAttendee
+                            {
+                                AppUser = users[4],
+                                IsDoctor = false                            
+                            },
+                        }
+                    },
+                };
 
-                await context.Appointments.AddRangeAsync(activities);
+                await context.Appointments.AddRangeAsync(appointments);
+                await context.Prescriptions.AddRangeAsync(prescriptions);
                 await context.SaveChangesAsync();
             }
         }
