@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
+import { Appointment, AppointmentFormValues } from "../models/appointment";
+import { Prescription, PrescriptionFormValues } from "../models/prescription";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -75,21 +77,35 @@ const request = {
 const Appointments = {
   list: () => request.get<Appointment[]>("/appointments"),
   details: (id: string) => request.get<Appointment>(`/appointments/${id}`),
-  create: (appointment: Appointment) =>
+  create: (appointment: AppointmentFormValues) =>
     request.post<void>(`/appointments`, appointment),
-  update: (appointment: Appointment) =>
-    axios.put<void>(`/appointments/${appointment.id}`, appointment),
-  delete: (id: string) => axios.delete<void>(`/appointments/${id}`),
+  update: (appointment: AppointmentFormValues) =>
+    request.put<void>(`/appointments/${appointment.id}`, appointment),
+  delete: (id: string) => request.delete<void>(`/appointments/${id}`),
+  attend: (id: string) => request.post<void>(`/appointments/${id}/attend`, {}),
 };
+
+const Prescriptions = {
+  list: () => request.get<Prescription[]>("/prescriptions"),
+  details: (id: string) => request.get<Prescription>(`/prescriptions/${id}`),
+  create: (prescription: PrescriptionFormValues) =>
+    request.post<void>(`/prescriptions`, prescription),
+  update: (prescription: PrescriptionFormValues) =>
+    request.put<void>(`/prescriptions/${prescription.id}`, prescription),
+  delete: (id: string) => request.delete<void>(`/prescriptions/${id}`),
+  attend: (id: string) => request.post<void>(`/prescriptions/${id}/attend`, {}),
+}
 
 const Account = {
   current: () => request.get<User>("/account"),
   login: (user: UserFormValues) => request.post<User>("/account/login", user),
-  register: (user: UserFormValues) => request.post<User>("/account/register", user),
+  register: (user: UserFormValues) =>
+    request.post<User>("/account/register", user),
 };
 
 const agent = {
   Appointments,
+  Prescriptions,
   Account,
 };
 

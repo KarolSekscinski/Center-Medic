@@ -29,9 +29,9 @@ export default observer(function AppointmentDetails() {
         <AppointmentDetailedInfo appointment={appointment} />
 
       </Grid.Column>
-      {/* <Grid.Column width={6} >
-        <AppointmentDetailedSidebar />
-      </Grid.Column> */}
+      <Grid.Column width={6} >
+        <AppointmentDetailedSidebar appointment={appointment} />
+      </Grid.Column>
     </Grid>
   );
 }) 

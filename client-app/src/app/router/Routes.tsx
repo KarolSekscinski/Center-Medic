@@ -26,6 +26,19 @@ export const routes: RouteObject[] = [
         element: <AppointmentForm key="create" />,
       },
       {
+        path: "prescriptions",
+        element: <AppointmentDashBoard />,
+      
+      },
+      {
+        path: "prescriptions/:id",
+        element: <AppointmentDetails />,
+      },
+      {
+        path: "createPrescription",
+        element: <AppointmentForm key="create" />,
+      },
+      {
         path: "manage/:id",
         element: <AppointmentForm key="manage" />,
       },

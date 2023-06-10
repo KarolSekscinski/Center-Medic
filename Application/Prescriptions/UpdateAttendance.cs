@@ -45,9 +45,9 @@ namespace Application.Prescriptions
                 var attendance = prescription.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
 
                 if (attendance != null && DoctorUsername == user.UserName)
-                    prescription.Status = "Approved";
+                    prescription.Status = !prescription.Status;
                 if (attendance != null && DoctorUsername != user.UserName)
-                    prescription.Status = "Pending";
+                    prescription.Attendees.Remove(attendance);
                 if (attendance == null)
                 {
                     attendance = new PrescriptionAttendee

@@ -2,6 +2,10 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { v4 as uuid } from "uuid";
 import { format } from "date-fns";
+import { Appointment, AppointmentFormValues } from "../models/appointment";
+import { store } from "./store";
+import { Profile } from "../models/profile";
+
 
 export default class AppointmentStore {
   appointmentRegistry = new Map<string, Appointment>();
@@ -69,6 +73,16 @@ export default class AppointmentStore {
   };
 
   private setAppointment = (appointment: Appointment) => {
+    const user = store.userStore.user;
+    if (user) {
+      appointment.isGoing = appointment.attendees!.some(
+        (a) => a.username === user.username
+      );
+      appointment.isDoctor = appointment.doctorUsername === user.username;
+      appointment.doctor = appointment.attendees?.find(
+        (x) => x.username === appointment.doctorUsername
+      );
+    }
     appointment.dateOfIssue = new Date(appointment.dateOfIssue!);
     this.appointmentRegistry.set(appointment.id, appointment);
   };
@@ -83,38 +97,41 @@ export default class AppointmentStore {
 
 
 
-  createAppointment = async (appointment: Appointment) => {
-    this.loading = true;
-    appointment.id = uuid();
+  createAppointment = async (appointment: AppointmentFormValues) => {
+    const user = store.userStore.user;
+    const attendee = new Profile(user!);
+    
     try {
       await agent.Appointments.create(appointment);
+      const newAppointment = new Appointment(appointment);
+      newAppointment.doctorUsername = user!.username;
+      newAppointment.attendees = [attendee];
+      this.setAppointment(newAppointment);
       runInAction(() => {
-        this.appointmentRegistry.set(appointment.id, appointment);
-        this.selectedAppointment = appointment;
-        this.editMode = false;
-        this.loading = false;
+        this.selectedAppointment = newAppointment;
+     
       });
     } catch (error) {
       console.log(error);
-      runInAction(() => {
-        this.loading = false;
-      });
+      
     }
   };
-  updateAppointment = async (appointment: Appointment) => {
-    this.loading = true;
+  updateAppointment = async (appointment: AppointmentFormValues) => {
+   
     try {
       await agent.Appointments.update(appointment);
       runInAction(() => {
-        this.appointmentRegistry.set(appointment.id, appointment);
-        this.selectedAppointment = appointment;
-        this.loading = false;
+        if (appointment.id) {
+          let updatedAppointment = { ...this.getAppointment(appointment.id), ...appointment };
+          this.appointmentRegistry.set(appointment.id, updatedAppointment as Appointment);
+          this.selectedAppointment = updatedAppointment as Appointment;
+        }
+        
+        
       });
     } catch (error) {
       console.log(error);
-      runInAction(() => {
-        this.loading = false;
-      });
+      
     }
   };
   deleteAppointment = async (id: string) => {
@@ -132,4 +149,48 @@ export default class AppointmentStore {
       });
     }
   };
+
+  updateAttendance = async () => {
+    const user = store.userStore.user;
+    this.loading = true;
+    try {
+      await agent.Appointments.attend(this.selectedAppointment!.id);
+      runInAction(() => {
+        if (this.selectedAppointment?.isGoing) {
+          this.selectedAppointment.attendees = this.selectedAppointment.attendees?.filter(
+            (a) => a.username !== user?.username
+          );
+          this.selectedAppointment.isGoing = false;
+        }
+        else {
+          const attendee = new Profile(user!);
+          this.selectedAppointment?.attendees?.push(attendee);
+          this.selectedAppointment!.isGoing = true;
+        }});
+        this.appointmentRegistry.set(this.selectedAppointment!.id, this.selectedAppointment!);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+  cancelAppointmentToggle = async () => {
+    this.loading = true;
+    try {
+      await agent.Appointments.attend(this.selectedAppointment!.id);
+      runInAction(() => {
+        this.selectedAppointment!.isCancelled = !this.selectedAppointment?.isCancelled;
+        this.appointmentRegistry.set(this.selectedAppointment!.id, this.selectedAppointment!);
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  }
+
 }

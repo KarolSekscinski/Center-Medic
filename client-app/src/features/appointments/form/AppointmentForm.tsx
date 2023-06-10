@@ -9,6 +9,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import MyTextArea from "../../../app/common/form/MyTextArea";
 import MyDateInput from "../../../app/common/form/MyDateInput";
+import { AppointmentFormValues } from "../../../app/models/appointment";
 
 export default observer(function AppointmentForm() {
   const { appointmentStore } = useStore();
@@ -23,13 +24,7 @@ export default observer(function AppointmentForm() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [appointment, setAppointment] = useState<Appointment>({
-    id: "",
-    description: "",
-    patiendId: 0,
-    doctorId: 0,
-    dateOfIssue: null,
-  });
+  const [appointment, setAppointment] = useState<AppointmentFormValues>(new AppointmentFormValues());
 
   const validationSchema = Yup.object({
     description: Yup.string().required("Opis wizyty jest wymagany."),
@@ -37,13 +32,17 @@ export default observer(function AppointmentForm() {
   });
   useEffect(() => {
     if (id)
-      loadAppointment(id).then((appointment) => setAppointment(appointment!));
+      loadAppointment(id).then((appointment) => setAppointment(new AppointmentFormValues(appointment)));
   }, [id, loadAppointment]);
 
-  function handleFormSubmit(appointment: Appointment) {
+  function handleFormSubmit(appointment: AppointmentFormValues) {
     if (!appointment.id) {
-      appointment.id = uuid();
-      createAppointment(appointment).then(() => navigate(`/appointments/${appointment.id}`));
+      let newAppointment = {
+        ...appointment,
+        id: uuid(),
+      };
+      
+      createAppointment(newAppointment).then(() => navigate(`/appointments/${newAppointment.id}`));
     } else {
       updateAppointment(appointment).then(() => navigate(`/appointments/${appointment.id}`));
     }
@@ -77,7 +76,7 @@ export default observer(function AppointmentForm() {
             />
             <Button
               disabled={isSubmitting || !dirty || !isValid}
-              loading={loading}
+              loading={isSubmitting}
               floated="right"
               positive
               type="submit"

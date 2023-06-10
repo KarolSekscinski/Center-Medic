@@ -3,6 +3,13 @@ export interface User {
     displayName: string;
     token: string;
     image?: string;
+    name?: string;
+    surname?: string;
+    pesel?: string;
+    sex?: string;
+    dateOfBirth?: Date;
+    phoneNumber?: string;
+    specialization?: string;
 }
 
 export interface UserFormValues {
@@ -10,4 +17,10 @@ export interface UserFormValues {
     password: string;
     displayName?: string;
     username?: string;
+    name?: string;
+    surname?: string;
+    pesel?: string;
+    sex?: string;
+    dateOfBirth?: Date;
+    phoneNumber?: string;
 }

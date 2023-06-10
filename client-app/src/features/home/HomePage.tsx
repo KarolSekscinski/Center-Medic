@@ -23,13 +23,22 @@ export default observer(function HomePage() {
           <>
             <Header as="h2" inverted content="Witaj w naszej przychodni" />
             <Button as={Link} to="/appointments" size="huge" inverted>
-              Przejdź do wizyt
+              Przejdź do swoich wizyt
+            </Button>
+            <Button as={Link} to="/prescriptions" size="huge" inverted>
+              Przejdź do swoich recept
             </Button>
           </>
         ) : (
           <>
             <Header as="h2" inverted content="Witaj w naszej przychodni" />
+            <Header
+              as="h3"
+              inverted
+              content="Zaloguj się lub zarejestruj jako pacjent"
+            />
             <Button
+              style={{ margin:6 }}
               onClick={() => modalStore.openModal(<LoginForm />)}
               size="huge"
               inverted
@@ -37,11 +46,21 @@ export default observer(function HomePage() {
               Zaloguj się
             </Button>
             <Button
+              style={{ margin: 6 }}
               onClick={() => modalStore.openModal(<RegisterForm />)}
               size="huge"
               inverted
             >
               Zarejestruj się
+            </Button>
+
+            <Header as="h3" inverted content="Zaloguj się jako lekarz" />
+            <Button
+              onClick={() => modalStore.openModal(<LoginForm />)}
+              size="huge"
+              inverted
+            >
+              Zaloguj się
             </Button>
           </>
         )}

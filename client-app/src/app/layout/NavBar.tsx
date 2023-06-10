@@ -5,7 +5,9 @@ import { Link, NavLink } from "react-router-dom";
 import { useStore } from "../stores/store";
 
 export default observer(function NavBar() {
-  const { userStore: {user, logout}} = useStore();
+  const {
+    userStore: { user, logout },
+  } = useStore();
   return (
     <Menu inverted fixed="top">
       <Container>
@@ -18,23 +20,32 @@ export default observer(function NavBar() {
           Medic Center
         </Menu.Item>
         <Menu.Item name="Wizyty" as={NavLink} to="/appointments" />
-        <Menu.Item name="Errors" as={NavLink} to="/errors" />
         <Menu.Item as={NavLink} to="/createAppointment">
-          <Button
-            positive
-            content="Zaplanuj wizytę"
-          />
+          <Button positive content="Zaplanuj wizytę" />
         </Menu.Item>
+        <Menu.Item as={NavLink} to="/prescriptions" name="Recepty" />
+        {user?.specialization !== null && (
+          <Menu.Item as={NavLink} to="/createPrescription">
+            <Button positive content="Wystaw receptę" />
+          </Menu.Item>
+        )}
+
         <Menu.Item position="right">
-          <Image src={user?.image || '/assets/user.png'} avatar spaced="right" />
+          <Image
+            src={user?.image || "/assets/user.png"}
+            avatar
+            spaced="right"
+          />
           <Dropdown pointing="top left" text={user?.displayName}>
             <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={`/profile/${user?.username}`} text='Mój profil' icon='user' />
-            <Dropdown.Item onClick={logout} text='Wyloguj' icon='power' />
+              <Dropdown.Item
+                as={Link}
+                to={`/profile/${user?.username}`}
+                text="Mój profil"
+                icon="user"
+              />
+              <Dropdown.Item onClick={logout} text="Wyloguj" icon="power" />
             </Dropdown.Menu>
-            
-
-            
           </Dropdown>
         </Menu.Item>
       </Container>
