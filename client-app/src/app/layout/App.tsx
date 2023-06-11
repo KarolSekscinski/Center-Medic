@@ -12,7 +12,7 @@ import ModalContainer from "../common/modals/ModalContainer";
 function App() {
   const locaction = useLocation();
   const {commonStore, userStore} = useStore();
-
+  
   useEffect(() => {
     if (commonStore.token) {
       userStore.getUser().finally(() => commonStore.setAppLoaded())
@@ -21,7 +21,7 @@ function App() {
     }
   }, [commonStore, userStore])
   if (!commonStore.appLoaded) return <LoadingComponent content="Ładowanie aplikacji..." />;
-
+  
   return (
     <>
     <ModalContainer />

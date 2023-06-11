@@ -6,8 +6,9 @@ import { useStore } from "../stores/store";
 
 export default observer(function NavBar() {
   const {
-    userStore: { user, logout },
+    userStore: { user, logout, getUser },
   } = useStore();
+  
   return (
     <Menu inverted fixed="top">
       <Container>
@@ -19,12 +20,14 @@ export default observer(function NavBar() {
           />
           Medic Center
         </Menu.Item>
-        <Menu.Item name="Wizyty" as={NavLink} to="/appointments" />
-        <Menu.Item as={NavLink} to="/createAppointment">
-          <Button positive content="Zaplanuj wizytę" />
-        </Menu.Item>
+        <Menu.Item name="Wizyty" as={NavLink} to={`/appointments/user/${user?.appUserId}`} />
+        
+          <Menu.Item as={NavLink} to="/createAppointment">
+            <Button positive content="Zaplanuj wizytę" />
+          </Menu.Item>
+        
         <Menu.Item as={NavLink} to="/prescriptions" name="Recepty" />
-        {user?.specialization !== null && (
+        {user?.isDoctor === "true" && (
           <Menu.Item as={NavLink} to="/createPrescription">
             <Button positive content="Wystaw receptę" />
           </Menu.Item>

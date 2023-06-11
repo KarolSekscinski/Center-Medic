@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import AppointmentDetailedHeader from "./AppointmentDetailedHeader";
 import AppointmentDetailedInfo from "./AppointmentDetailedInfo";
-import AppointmentDetailedSidebar from "./AppointmentDetailedSidebar";
+import Calendar from "react-calendar";
 
 
 
@@ -24,13 +24,13 @@ export default observer(function AppointmentDetails() {
 
   return (
     <Grid>
-      <Grid.Column width={10}>
+      <Grid.Column width={10}  >
         <AppointmentDetailedHeader appointment={appointment} />
         <AppointmentDetailedInfo appointment={appointment} />
 
       </Grid.Column>
       <Grid.Column width={6} >
-        <AppointmentDetailedSidebar appointment={appointment} />
+        <Calendar />
       </Grid.Column>
     </Grid>
   );

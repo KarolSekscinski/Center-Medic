@@ -35,7 +35,7 @@ export default observer(function AppointmentDetailedSidebar({
                   color="orange"
                   ribbon="right"
                 >
-                  Host
+                  Lekarz
                 </Label>
               )}
               <Image size="tiny" src={attendee.image || "/assets/user.png"} />

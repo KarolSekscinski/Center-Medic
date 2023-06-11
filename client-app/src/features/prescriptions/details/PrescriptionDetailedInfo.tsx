@@ -1,15 +1,14 @@
-import { format } from 'date-fns';
-import { observer } from 'mobx-react-lite';
-import React from 'react'
-import {Segment, Grid, Icon} from 'semantic-ui-react'
-import { Appointment } from '../../../app/models/appointment';
+import { format } from "date-fns";
+import { observer } from "mobx-react-lite";
+import { Grid, Icon, Segment } from "semantic-ui-react";
+import { Prescription } from "../../../app/models/prescription";
 
 
 interface Props {
-    appointment: Appointment;
+    prescription: Prescription;
 }
 
-export default observer(function ActivityDetailedInfo({appointment}: Props) {
+export default observer(function PrescriptionDetailedInfo({prescription}: Props) {
     return (
         <Segment.Group>
             <Segment attached='top'>
@@ -18,7 +17,7 @@ export default observer(function ActivityDetailedInfo({appointment}: Props) {
                         <Icon size='large' color='teal' name='info'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <p>{appointment.description}</p>
+                        <p>{prescription.description}</p>
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -28,9 +27,9 @@ export default observer(function ActivityDetailedInfo({appointment}: Props) {
                         <Icon name='calendar' size='large' color='teal'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-            <span>
-              {format(appointment.dateOfIssue!, 'dd MMM yyyy h:mm aa')}
-            </span>
+                    <span>
+                        {format(prescription.dateOfIssue!, 'dd MMM yyyy h:mm aa')}
+                    </span>
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -46,4 +45,4 @@ export default observer(function ActivityDetailedInfo({appointment}: Props) {
             </Segment>
         </Segment.Group>
     )
-})
+});

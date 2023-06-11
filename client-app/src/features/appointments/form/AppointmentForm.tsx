@@ -10,6 +10,11 @@ import * as Yup from "yup";
 import MyTextArea from "../../../app/common/form/MyTextArea";
 import MyDateInput from "../../../app/common/form/MyDateInput";
 import { AppointmentFormValues } from "../../../app/models/appointment";
+import MySelectInput from "../../../app/common/form/MySelectInput";
+import { doctorsOptions } from "../../../app/common/options/doctorsOptions";
+import { patientsOptions } from "../../../app/common/options/patientsOptions";
+
+
 
 export default observer(function AppointmentForm() {
   const { appointmentStore } = useStore();
@@ -29,6 +34,8 @@ export default observer(function AppointmentForm() {
   const validationSchema = Yup.object({
     description: Yup.string().required("Opis wizyty jest wymagany."),
     dateOfIssue: Yup.string().required("Data wizyty jest wymagana."),
+    
+    
   });
   useEffect(() => {
     if (id)
@@ -40,6 +47,8 @@ export default observer(function AppointmentForm() {
       let newAppointment = {
         ...appointment,
         id: uuid(),
+        doctor: appointment.doctor,
+        patient: appointment.patient,
       };
       
       createAppointment(newAppointment).then(() => navigate(`/appointments/${newAppointment.id}`));
@@ -65,8 +74,14 @@ export default observer(function AppointmentForm() {
       >
         {({ handleSubmit, isValid, isSubmitting, dirty }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
+            
             <MyTextArea rows={3} name="description" placeholder="Opis wizyty" />
+            
+            <MySelectInput options={doctorsOptions} placeholder="Lekarz" name="doctor" />
 
+            <MySelectInput options={patientsOptions} placeholder="Pacjent" name="patient" />
+            
+            <Header content="Termin wizyty" sub color="teal" />
             <MyDateInput
               placeholderText="Data wizyty"
               name="dateOfIssue"

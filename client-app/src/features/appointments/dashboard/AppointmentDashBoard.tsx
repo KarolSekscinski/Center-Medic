@@ -8,14 +8,25 @@ import AppointmentFilters from "./AppointmentFilters";
 
 
 
+
 export default observer(function AppointmentDashBoard() {
+  
+  
   const { appointmentStore } = useStore();
   const {loadAppointments, appointmentRegistry} = appointmentStore;
+  
+  
+  
 
   useEffect(() => {
-    if (appointmentRegistry.size <= 1) loadAppointments();
-  }, [loadAppointments, appointmentRegistry.size]);
 
+    if (appointmentRegistry.size <= 1) {
+      loadAppointments();
+    }
+    
+    
+  }, [loadAppointments, appointmentRegistry.size]);
+  
   if (appointmentStore.loadingInitial) {
     return <LoadingComponent content="Ładowanie wizyt..." />;
   }

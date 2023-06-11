@@ -21,7 +21,8 @@ namespace Persistence
                         Specialization = "Kardiolog",
                         Name = "Karol",
                         Surname = "Kowalski",
-                        PhoneNumber = "123456789"    
+                        PhoneNumber = "123456789",
+                        IsDoctor = "true"   
                     },
                     new AppUser
                     {
@@ -31,7 +32,8 @@ namespace Persistence
                         Specialization = "Internista",
                         Name = "Krzysztof",
                         Surname = "Nowak",
-                        PhoneNumber = "123456789"
+                        PhoneNumber = "123456789",
+                        IsDoctor = "true"   
                     },
                     new AppUser
                     {
@@ -41,7 +43,8 @@ namespace Persistence
                         Specialization = "Lekarz rodzinny",
                         Name = "Paulina",
                         Surname = "Kowalczyk",
-                        PhoneNumber = "123456789"
+                        PhoneNumber = "123456789",
+                        IsDoctor = "true"   
                     },
                     //Patients
                     new AppUser
@@ -55,6 +58,7 @@ namespace Persistence
                         Pesel = "12345678901",
                         DateOfBirth = DateTime.UtcNow.AddYears(-20),
                         Sex = "M",
+                        IsDoctor = "false"   
                     },
                     new AppUser
                     {
@@ -67,6 +71,7 @@ namespace Persistence
                         Pesel = "12345678901",
                         DateOfBirth = DateTime.UtcNow.AddYears(-40),
                         Sex = "K",
+                        IsDoctor = "false" 
                     },
                     new AppUser
                     {
@@ -78,6 +83,7 @@ namespace Persistence
                         PhoneNumber = "123456789",
                         Pesel = "12345678901",
                         DateOfBirth = DateTime.UtcNow.AddYears(-60),
+                        IsDoctor = "false" 
                     }
                 };
 

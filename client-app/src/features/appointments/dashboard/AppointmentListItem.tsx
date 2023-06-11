@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import AppointmentListItemAttendee from "./AppointmentListItemAttendee";
 import { Appointment } from "../../../app/models/appointment";
+import { useStore } from "../../../app/stores/store";
+import { is } from "date-fns/locale";
 
 interface Props {
   appointment: Appointment;
@@ -19,17 +21,19 @@ export default function AppointmentListItem({ appointment }: Props) {
             color="red"
             content="Wizyta została odwołana"
             style={{ textAlign: "center" }}
-            ></Label>
+          />
         )}
         <Item.Group>
           <Item>
-            <Item.Image style={{marginBottom: 3}} size="tiny" circular src="/assets/lekarz-ikona.png" />
+            <Item.Image
+              style={{ marginBottom: 3 }}
+              size="tiny"
+              circular
+              src="/assets/lekarz-ikona.png"
+            />
             <Item.Content>
               <Item.Header as={Link} to={`/appointments/${appointment.id}`}>
-                {`Wizyta ${format(
-                  appointment.dateOfIssue!,
-                  "dd MMM yyyy h:mm aa"
-                )}`}
+                {`Wizyta ${format(appointment.dateOfIssue!, "dd MMM yyyy")}`}
               </Item.Header>
               <Item.Description>{`Lekarz: ${appointment.doctor?.displayName}`}</Item.Description>
               {appointment.isDoctor && (
@@ -53,8 +57,8 @@ export default function AppointmentListItem({ appointment }: Props) {
       <Segment>
         <span>
           <Icon name="clock" />{" "}
-          {format(appointment.dateOfIssue!, "dd MMM yyyy h:mm aa")}
-          <Icon name="marker" /> Numer Sali
+          {format(appointment.dateOfIssue!, "dd MMM yyyy h:mm aa")}{" "}
+          <Icon name="marker" /> Nr sali 3
         </span>
       </Segment>
       <Segment secondary>
@@ -68,7 +72,7 @@ export default function AppointmentListItem({ appointment }: Props) {
           to={`/appointments/${appointment.id}`}
           floated="right"
           color="teal"
-          content="Zobacz szczegóły"
+          content="Zobacz szczegóły wizyty"
         />
       </Segment>
     </Segment.Group>

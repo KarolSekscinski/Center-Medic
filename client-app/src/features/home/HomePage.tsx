@@ -22,7 +22,7 @@ export default observer(function HomePage() {
         {userStore.isLoggedIn ? (
           <>
             <Header as="h2" inverted content="Witaj w naszej przychodni" />
-            <Button as={Link} to="/appointments" size="huge" inverted>
+            <Button as={Link} to={`/appointments/user/${userStore.user?.appUserId}`} size="huge" inverted>
               Przejdź do swoich wizyt
             </Button>
             <Button as={Link} to="/prescriptions" size="huge" inverted>

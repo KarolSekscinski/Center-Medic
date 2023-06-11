@@ -31,6 +31,7 @@ namespace Application.Appointments
 
             public async Task<Result<AppointmentDto>> Handle(Query request, CancellationToken cancellationToken)
             {
+                
                 var appointment = await _context.Appointments
                     .ProjectTo<AppointmentDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(x => x.Id == request.Id);

@@ -7,6 +7,9 @@ import TestErrors from "../../features/errors/TestError";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
 import LoginForm from "../../features/users/LoginForm";
+import PrescriptionDashBoard from "../../features/prescriptions/dashboard/PrescriptionDashBoard";
+import PrescriptionDetails from "../../features/prescriptions/details/PrescriptionDetails";
+import PrescriptionForm from "../../features/prescriptions/form/PrescriptionForm";
 
 export const routes: RouteObject[] = [
   {
@@ -14,7 +17,7 @@ export const routes: RouteObject[] = [
     element: <App />,
     children: [
       {
-        path: "appointments",
+        path: "appointments/user/:id",
         element: <AppointmentDashBoard />,
       },
       {
@@ -27,16 +30,16 @@ export const routes: RouteObject[] = [
       },
       {
         path: "prescriptions",
-        element: <AppointmentDashBoard />,
+        element: <PrescriptionDashBoard />,
       
       },
       {
         path: "prescriptions/:id",
-        element: <AppointmentDetails />,
+        element: <PrescriptionDetails />,
       },
       {
         path: "createPrescription",
-        element: <AppointmentForm key="create" />,
+        element: <PrescriptionForm key="create" />,
       },
       {
         path: "manage/:id",

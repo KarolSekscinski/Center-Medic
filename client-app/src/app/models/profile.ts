@@ -6,12 +6,13 @@ export interface Profile {
     displayName: string;
     image?: string;
     phoneNumber?: string;
+    isDoctor?: string;
 }
 
 export class Profile implements Profile {
     constructor(user: User) {
         this.username = user.username;
-        
+        this.isDoctor = user.isDoctor;
         this.displayName = user.displayName;
         this.image = user.image;
         

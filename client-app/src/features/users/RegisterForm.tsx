@@ -1,10 +1,13 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import MyTextInput from "../../app/common/form/MyTextInput";
-import { Button, Header, Label } from "semantic-ui-react";
+import { Button, Header} from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../app/stores/store";
 import * as Yup from "yup";
 import ValidationError from "../errors/ValidationError";
+import MySelectInput from "../../app/common/form/MySelectInput";
+import { sexOptions } from "../../app/common/options/sexOptions";
+import MyDateInput from "../../app/common/form/MyDateInput";
 
 export default observer(function RegisterForm() {
   const { userStore } = useStore();
@@ -15,6 +18,12 @@ export default observer(function RegisterForm() {
         username: "",
         email: "",
         password: "",
+        name: "",
+        surname: "",
+        pesel: "",
+        phoneNumber: "",
+        sex: "",
+        dateOfBirth: new Date(),
         error: null,
       }}
       onSubmit={(values, { setErrors }) =>
@@ -23,10 +32,16 @@ export default observer(function RegisterForm() {
           .catch((error) => setErrors({ error }))
       }
       validationSchema={Yup.object({
-        displayName: Yup.string().required(),
-        username: Yup.string().required(),
-        email: Yup.string().required().email(),
-        password: Yup.string().required(),
+        displayName: Yup.string().required("Nazwa użytkownika jest wymagana."),
+        username: Yup.string().required("Nazwa użytkownika jest wymagana."),
+        email: Yup.string().required().email("Emailjest wymagany."),
+        password: Yup.string().required("Hasło jest wymagane."),
+        name: Yup.string().required("Imię jest wymagane."),
+        surname: Yup.string().required("Nazwisko jest wymagane."),
+        pesel: Yup.string().required("Pesel jest wymagany."),
+        phoneNumber: Yup.string().required("Numer telefonu jest wymagany."),
+        sex: Yup.string().required("Płeć jest wymagana."),
+        dateOfBirth: Yup.string().required("Data urodzenia jest wymagana."),
       })}
     >
       {({ handleSubmit, isSubmitting, errors, isValid, dirty }) => (
@@ -40,7 +55,12 @@ export default observer(function RegisterForm() {
           <MyTextInput name="email" placeholder="Email" />
           <MyTextInput name="displayName" placeholder="Display Name" />
           <MyTextInput name="username" placeholder="Username" />
-
+          <MyTextInput name="name" placeholder="Imię" />
+          <MyTextInput name="surname" placeholder="Nazwisko" />
+          <MyTextInput name="pesel" placeholder="Pesel" />
+          <MyTextInput name="phoneNumber" placeholder="Numer telefonu" />
+          <MySelectInput options={sexOptions} name="sex" placeholder="płeć" />
+          <MyDateInput name='date' placeholderText='Data urodzenia'  timeCaption='time' dateFormat='MMMM d, yyyy h:mm aa' />
           <MyTextInput name="password" placeholder="Password" type="password" />
           <ErrorMessage
             name="error"

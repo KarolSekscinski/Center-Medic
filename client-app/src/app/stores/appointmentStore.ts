@@ -13,6 +13,7 @@ export default class AppointmentStore {
   editMode = false;
   loading = false;
   loadingInitial = false;
+  
 
   constructor() {
     makeAutoObservable(this);
@@ -33,9 +34,16 @@ export default class AppointmentStore {
   }
 
   loadAppointments = async () => {
+    const {getUser} = store.userStore;
+    getUser();
+    const {user} = store.userStore;
+    
     this.setLoadingInitial(true);
     try {
-      const appointments = await agent.Appointments.list();
+      
+      console.log(user);
+      console.log(user!.appUserId);
+      const appointments = await agent.Appointments.list(user!.appUserId);
 
       appointments.forEach((appointment) => {
         this.setAppointment(appointment);
@@ -105,6 +113,7 @@ export default class AppointmentStore {
       await agent.Appointments.create(appointment);
       const newAppointment = new Appointment(appointment);
       newAppointment.doctorUsername = user!.username;
+      
       newAppointment.attendees = [attendee];
       this.setAppointment(newAppointment);
       runInAction(() => {

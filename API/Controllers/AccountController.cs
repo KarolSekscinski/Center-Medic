@@ -58,6 +58,7 @@ namespace API.Controllers
             }
             var user = new AppUser
             {
+                
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
                 UserName = registerDto.UserName,
@@ -71,7 +72,6 @@ namespace API.Controllers
             return BadRequest(result.Errors);
             
         }
-
         
         [Authorize]
         [HttpGet]
@@ -87,7 +87,46 @@ namespace API.Controllers
                 DisplayName = user.DisplayName,
                 Token = _tokenService.CreateToken(user),
                 UserName = user.UserName,
+                IsDoctor = user.IsDoctor,
+                AppUserId = user.Id,
             };
         }
+        [AllowAnonymous]
+        [HttpGet("doctors")]
+        public async Task<ActionResult<List<UserDto>>> GetDoctors()
+        {
+            var users = await _userManager.Users.Where(u => u.IsDoctor == "true").ToListAsync();
+            var usersToReturn = new List<UserDto>();
+            foreach (var user in users)
+            {
+                usersToReturn.Add(new UserDto
+                {
+                    DisplayName = user.DisplayName,
+                    UserName = user.UserName,
+                    IsDoctor = user.IsDoctor,
+                    AppUserId = user.Id,
+                });
+            }
+            return usersToReturn;
+        }
+        [AllowAnonymous]
+        [HttpGet("patients")]
+        public async Task<ActionResult<List<UserDto>>> GetPatients()
+        {
+            var users = await _userManager.Users.Where(u => u.IsDoctor == "false").ToListAsync();
+            var usersToReturn = new List<UserDto>();
+            foreach (var user in users)
+            {
+                usersToReturn.Add(new UserDto
+                {
+                    DisplayName = user.DisplayName,
+                    UserName = user.UserName,
+                    IsDoctor = user.IsDoctor,
+                    AppUserId = user.Id,
+                });
+            }
+            return usersToReturn;
+        }
+        
     }
 }

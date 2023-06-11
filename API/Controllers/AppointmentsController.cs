@@ -13,7 +13,7 @@ using Persistence;
 
 namespace API.Controllers
 {
-    
+    [AllowAnonymous]
     public class AppointmentsController : BaseApiController
     {
         
@@ -23,6 +23,14 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new List.Query()));
            
         }
+
+        [HttpGet("user/{userId}")] //api/appointments/user
+        public async Task<IActionResult> GetAppointmentsForUser( string userId)
+        {
+            return HandleResult(await Mediator.Send(new List.Query{UserId = userId}));
+           
+        }
+        
         [HttpGet("{id}")] //api/appointments/id
         public async Task<IActionResult> GetAppointment(Guid id)
         {
@@ -34,14 +42,14 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Create.Command {Appointment = appointment}));
         }
-        [Authorize(Policy = "IsAppointmentDoctor")]
+        // [Authorize(Policy = "IsAppointmentDoctor")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditAppointment(Guid id, [FromBody]Appointment appointment)
         {
             appointment.Id = id;
             return HandleResult(await Mediator.Send(new Edit.Command{Appointment = appointment}));
         }
-        [Authorize(Policy = "IsAppointmentDoctor")]
+        // [Authorize(Policy = "IsAppointmentDoctor")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppointment(Guid id)
         {

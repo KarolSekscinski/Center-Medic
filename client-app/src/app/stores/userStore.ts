@@ -5,49 +5,84 @@ import { store } from "./store";
 import { router } from "../router/Routes";
 
 export default class UserStore {
-    user: User | null = null;
+  user: User | null = null;
+  users: User[] = [];
 
-    constructor() {
-        makeAutoObservable(this);
-    }
-    get isLoggedIn() {
-        return !!this.user;
-    }
-    login = async (creds: UserFormValues) => {
-        try {
-            const user = await agent.Account.login(creds);
+  constructor() {
+    makeAutoObservable(this);
+  }
+  get isLoggedIn() {
+    return !!this.user;
+  }
+  login = async (creds: UserFormValues) => {
+    try {
+      const user = await agent.Account.login(creds);
 
-            store.commonStore.setToken(user.token);
-            runInAction(() => this.user = user);
-            router.navigate('/');
-            store.modalStore.closeModal();
-        } catch (error) {
-            throw error;
-        }
-    }
-    register = async (creds: UserFormValues) => {
-        try {
-            const user = await agent.Account.register(creds);
+      store.commonStore.setToken(user.token);
+      runInAction(() => (this.user = user));
+      this.user!.isDoctor = user.isDoctor;
+      console.log(this.user);
+      this.user!.appUserId= user.appUserId;
 
-            store.commonStore.setToken(user.token);
-            runInAction(() => this.user = user);
-            router.navigate('/');
-            store.modalStore.closeModal();
-        } catch (error) {
-            throw error;
-        }
+      router.navigate("/");
+      store.modalStore.closeModal();
+    } catch (error) {
+      throw error;
     }
-    logout = () => {
-        store.commonStore.setToken(null);
-        this.user = null;
-        router.navigate('/');
+  };
+  register = async (creds: UserFormValues) => {
+    try {
+      const user = await agent.Account.register(creds);
+
+      store.commonStore.setToken(user.token);
+      runInAction(() => (this.user = user));
+      router.navigate("/");
+      store.modalStore.closeModal();
+    } catch (error) {
+      throw error;
     }
-    getUser = async () => {
-        try {
-            const user = await agent.Account.current();
-            runInAction(() => this.user = user);
-        } catch (error) {
-            console.log(error);
-        }
+  };
+  logout = () => {
+    store.commonStore.setToken(null);
+    this.user = null;
+    router.navigate("/");
+  };
+  getUser = async () => {
+    try {
+      const user = await agent.Account.current();
+
+      runInAction(() => {
+        this.user = user;
+        this.user.isDoctor = user.isDoctor;
+        this.user.appUserId = user.appUserId;
+      });
+      console.log(this.user);
+    } catch (error) {
+      console.log(error);
     }
+  };
+  getDoctors = async () => {
+    try {
+      const doctors = await agent.Account.doctors();
+
+      runInAction(() => {
+        this.users = doctors;
+      });
+      console.log(this.users);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  getPatients = async () => {
+    try {
+      const patients = await agent.Account.patients();
+
+      runInAction(() => {
+        this.users = patients;
+      });
+      console.log(this.users);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

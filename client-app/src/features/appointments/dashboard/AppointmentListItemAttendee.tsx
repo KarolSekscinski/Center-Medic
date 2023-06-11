@@ -4,6 +4,7 @@ import { List, Image, Popup } from "semantic-ui-react";
 import { Profile } from "../../../app/models/profile";
 import { Link } from "react-router-dom";
 import ProfileCard from "../../profiles/ProfileCard";
+import { useStore } from "../../../app/stores/store";
 
 interface Props {
   attendees: Profile[];
@@ -12,12 +13,14 @@ interface Props {
 export default observer(function AppointmentListItemAttendee({
   attendees,
 }: Props) {
+  
   return (
     <List horizontal>
       {attendees.map((attendee) => (
         <Popup
           hoverable
           key={attendee.username}
+          
           trigger={
             <List.Item
               key={attendee.username}
@@ -32,9 +35,9 @@ export default observer(function AppointmentListItemAttendee({
             </List.Item>
           }
         >
-          <Popup.Content>
+          {/* <Popup.Content>
             <ProfileCard profile={attendee} />
-          </Popup.Content>
+          </Popup.Content> */}
         </Popup>
       ))}
     </List>

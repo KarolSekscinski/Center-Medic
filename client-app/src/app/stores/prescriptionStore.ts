@@ -72,6 +72,14 @@ export default class PrescriptionStore {
 
     private setPrescription = (prescription: Prescription) => {
         const user = store.userStore.user;
+        if (user) {
+            prescription.isDoctor = prescription.doctorUsername === user.username;
+            prescription.doctor = prescription.attendees?.find(
+                a => a.username === prescription.doctorUsername
+            );
+        }
+        prescription.dateOfIssue = new Date(prescription.dateOfIssue!);
+        this.prescriptionRegistry.set(prescription.id, prescription);
     }
 
     private getPrescription = (id: string) => {

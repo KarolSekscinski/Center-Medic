@@ -29,6 +29,7 @@ export default observer(function ActivityDetailedHeader({
   const {
     appointmentStore: { updateAttendance, loading, cancelAppointmentToggle },
   } = useStore();
+   
 
   return (
     <Segment.Group>
@@ -41,6 +42,7 @@ export default observer(function ActivityDetailedHeader({
             content="Wizyta odwołana"
           />
         )}
+        
         <Image
           src={`/assets/categoryImages/gabinet.jpg`}
           fluid
@@ -70,7 +72,7 @@ export default observer(function ActivityDetailedHeader({
         </Segment>
       </Segment>
       <Segment clearing attached="bottom">
-        {appointment.isDoctor ? (
+        {!appointment.isDoctor ? (
           <>
             <Button
               color={appointment.isCancelled ? "green" : "red"}
