@@ -30,7 +30,7 @@ export default observer(function PrescriptionDetailedHeader({prescription}: Prop
     const [isDisabled, setIsDisabled] = useState(false);
     const user = useStore().userStore.user;
     useEffect(() => {
-        if (user?.isDoctor === 'true') {
+        if (user?.isDoctor === true) {
             setIsDoctor(true);
         }
     }, [user?.isDoctor]);

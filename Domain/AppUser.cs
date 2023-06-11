@@ -20,7 +20,7 @@ namespace Domain
 
         public string Sex { get; set; }
 
-        public bool IsDoctor { get; set; }
+        public string IsDoctor { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 

@@ -39,7 +39,7 @@ export default observer(function ActivityDetailedHeader({
   const patient = appointment.attendees.find(x => x.displayName !== appointment.doctorUserProfile?.displayName);
   console.log(patient);
   useEffect(() => {
-    if (user?.isDoctor === "true") {
+    if (user?.isDoctor === true) {
       setIsDoctor(true);
     }
   }, [user?.isDoctor]);

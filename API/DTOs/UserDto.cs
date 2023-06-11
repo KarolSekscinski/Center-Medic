@@ -12,7 +12,7 @@ namespace API.DTOs
 
         public string UserName { get; set; }
 
-        public bool IsDoctor { get; set; }
+        public string IsDoctor { get; set; }
 
         public string AppUserId { get; set; }
     }
