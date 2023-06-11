@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Header, Segment } from "semantic-ui-react";
+import { Button, Header, Label, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -10,9 +10,8 @@ import * as Yup from "yup";
 import MyTextArea from "../../../app/common/form/MyTextArea";
 import MyDateInput from "../../../app/common/form/MyDateInput";
 import { AppointmentFormValues } from "../../../app/models/appointment";
-import MySelectInput from "../../../app/common/form/MySelectInput";
-import { doctorsOptions } from "../../../app/common/options/doctorsOptions";
-import { patientsOptions } from "../../../app/common/options/patientsOptions";
+import DoctorsSelectInput from "../../../app/common/form/DoctorsSelectInput";
+import PatientsSelectInput from "../../../app/common/form/PatientsSelectInput";
 
 
 
@@ -35,6 +34,8 @@ export default observer(function AppointmentForm() {
   const validationSchema = Yup.object({
     description: Yup.string().required("Opis wizyty jest wymagany."),
     dateOfIssue: Yup.string().required("Data wizyty jest wymagana."),
+    patient: Yup.string().required("Wybranie pacjenta jest wymagane."),
+    doctor: Yup.string().required("Wybranie lekarza jest wymagane."),
     
     
   });
@@ -44,6 +45,7 @@ export default observer(function AppointmentForm() {
   }, [id, loadAppointment]);
 
   function handleFormSubmit(appointment: AppointmentFormValues) {
+    console.log(appointment);
     if (!appointment.id) {
       let newAppointment = {
         ...appointment,
@@ -66,7 +68,7 @@ export default observer(function AppointmentForm() {
 
   return (
     <Segment clearing>
-      <Header content="Szczegóły wizyty" sub color="teal" />
+      <Header size="huge" content="Szczegóły wizyty" sub color="teal" />
       <Formik
         validationSchema={validationSchema}
         enableReinitialize
@@ -75,12 +77,13 @@ export default observer(function AppointmentForm() {
       >
         {({ handleSubmit, isValid, isSubmitting, dirty }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
-            
+            <Header size="small" color="teal" content="Opis wizyty" />
             <MyTextArea rows={3} name="description" placeholder="Opis wizyty" />
-            
-            <MySelectInput options={doctorsOptions} placeholder="Lekarz" name="doctor" />
-
-            <MySelectInput options={patientsOptions} placeholder="Pacjent" name="patient" />
+            <Header size="small" color="teal" content="Lekarz:" />
+            <DoctorsSelectInput  />
+            <Header size="small" color="teal" content="Pacjent:" />
+            <PatientsSelectInput />
+            {/* <MySelectInput options={patientsOptions} placeholder="Pacjent" name="patient" /> */}
             
             <Header content="Termin wizyty" sub color="teal" />
             <MyDateInput
@@ -96,7 +99,7 @@ export default observer(function AppointmentForm() {
               floated="right"
               positive
               type="submit"
-              content="Zatwierdź"
+              content="Potwierdź"
             />
             <Button
               as={Link}

@@ -6,7 +6,8 @@ import { router } from "../router/Routes";
 
 export default class UserStore {
   user: User | null = null;
-  users: User[] = [];
+  doctors: User[] = [];
+  patients: User[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -21,7 +22,7 @@ export default class UserStore {
       store.commonStore.setToken(user.token);
       runInAction(() => (this.user = user));
       this.user!.isDoctor = user.isDoctor;
-      console.log(this.user);
+      
       this.user!.appUserId= user.appUserId;
 
       router.navigate("/");
@@ -66,9 +67,9 @@ export default class UserStore {
       const doctors = await agent.Account.doctors();
 
       runInAction(() => {
-        this.users = doctors;
+        this.doctors = doctors;
       });
-      console.log(this.users);
+      
     } catch (error) {
       console.log(error);
     }
@@ -78,9 +79,9 @@ export default class UserStore {
       const patients = await agent.Account.patients();
 
       runInAction(() => {
-        this.users = patients;
+        this.patients = patients;
       });
-      console.log(this.users);
+      
     } catch (error) {
       console.log(error);
     }

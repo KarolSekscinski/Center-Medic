@@ -12,6 +12,8 @@ import MyDateInput from "../../../app/common/form/MyDateInput";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MyTextArea from "../../../app/common/form/MyTextArea";
 import UserStore from "../../../app/stores/userStore";
+import DoctorsSelectInput from "../../../app/common/form/DoctorsSelectInput";
+import PatientsSelectInput from "../../../app/common/form/PatientsSelectInput";
 
 export default observer(function PrescriptionForm() {
     const {prescriptionStore} = useStore();
@@ -26,8 +28,8 @@ export default observer(function PrescriptionForm() {
         dateOfIssue: Yup.string().required("Data wystawienia recepty jest wymagana."),
         expirationDate: Yup.string().required("Data ważności recepty jest wymagana."),
         
-        doctor: Yup.string().required("Nazwa lekarza jest wymagana."),
-        patient: Yup.string().required("Nazwa pacjenta jest wymagana."),
+        patient: Yup.string().required("Wybranie pacjenta jest wymagane."),
+        doctor: Yup.string().required("Wybranie lekarza jest wymagane."),
     });
 
     useEffect(() => {
@@ -52,7 +54,7 @@ export default observer(function PrescriptionForm() {
         
     return (
         <Segment clearing>
-            <Header content="Szczegoly recepty" sub color="teal" />
+            <Header size="huge" content="Szczegóły recepty" sub color="teal" />
             <Formik
                 validationSchema={validationSchema}
                 enableReinitialize
@@ -60,19 +62,23 @@ export default observer(function PrescriptionForm() {
                 onSubmit={values => handleFormSubmit(values)}>
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                        
+                        <Header size="small" color="teal" content="Opis recepty" />
                         <MyTextArea rows={3} name='description' placeholder='Opis' />
+                        <Header size="small" color="teal" content="Data wystawienia" />
                         <MyDateInput name='dateOfIssue' placeholderText='Data wystawienia' showTimeSelect timeCaption="time" dateFormat="MMMM d, yyyy h:mm aa" />
+                        <Header size="small" color="teal" content="Data ważności" />
                         <MyDateInput name='expirationDate' placeholderText='Data ważności' showTimeSelect timeCaption="time" dateFormat="MMMM d, yyyy h:mm aa" />
+                        <Header size="small" color="teal" content="Lekarz:" />
+                        <DoctorsSelectInput />
+                        <Header size="small" color="teal" content="Pacjent:" />
+                        <PatientsSelectInput />
                         
-                        <MyTextInput name='doctor' placeholder='Lekarz' />
-                        <MyTextInput name='patient' placeholder='Pacjent' />
                         <Button
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading}
                             floated='right'
-                            positive type='submit' content='Submit' />
-                        <Button as={Link} to={`/prescriptions/user/${user?.appUserId}`} floated='right' type='button' content='Cancel' />
+                            positive type='submit' content='Potwierdź' />
+                        <Button as={Link} to={`/prescriptions/user/${user?.appUserId}`} floated='right' type='button' content='Anuluj' />
                     </Form>
 
                 )}
