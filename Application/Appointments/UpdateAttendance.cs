@@ -41,7 +41,7 @@ namespace Application.Appointments
 
                 if (user == null) return null;
 
-                var DoctorUsername = appointment.Attendees.FirstOrDefault(x => x.IsDoctor)?.AppUser?.UserName;
+                var DoctorUsername = appointment.Attendees.FirstOrDefault(x => x.IsDoctor).AppUser.UserName;
 
                 var attendance = appointment.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
 

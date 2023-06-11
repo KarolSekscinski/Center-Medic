@@ -24,7 +24,7 @@ export default observer(function RegisterForm() {
         phoneNumber: "",
         sex: "",
         dateOfBirth: new Date(),
-        isDoctor: false,
+        isDoctor: 'false',
         error: null,
       }}
       onSubmit={(values, { setErrors }) =>

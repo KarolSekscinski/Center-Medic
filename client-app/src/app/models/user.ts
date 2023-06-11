@@ -11,7 +11,7 @@ export interface User {
     dateOfBirth?: Date;
     phoneNumber?: string;
     specialization?: string;
-    isDoctor: boolean;
+    isDoctor: string;
 }
 
 export interface UserFormValues {
@@ -26,5 +26,5 @@ export interface UserFormValues {
     sex?: string;
     dateOfBirth?: Date;
     phoneNumber?: string;
-    isDoctor?: boolean;
+    isDoctor?: string;
 }

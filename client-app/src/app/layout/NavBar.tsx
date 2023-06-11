@@ -21,13 +21,13 @@ export default observer(function NavBar() {
           Medic Center
         </Menu.Item>
         <Menu.Item name="Wizyty" as={NavLink} to={`/appointments/user/${user?.appUserId}`} />
-        {user?.isDoctor === true && (
+        {user?.isDoctor === 'true' && (
           <Menu.Item as={NavLink} to="/createAppointment">
             <Button positive content="Zaplanuj wizytę" />
           </Menu.Item>)}
         
         <Menu.Item as={NavLink} to={`/prescriptions/user/${user?.appUserId}`} name="Recepty" />
-        {user?.isDoctor === true && (
+        {user?.isDoctor === 'true' && (
           <Menu.Item as={NavLink} to="/createPrescription">
             <Button positive content="Wystaw receptę" />
           </Menu.Item>

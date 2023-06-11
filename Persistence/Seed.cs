@@ -15,7 +15,7 @@ namespace Persistence
                     //Doctors
                     new AppUser
                     {
-                        DisplayName = "Karol",
+                        DisplayName = "Karol Kowalski",
                         UserName = "karol",
                         Email = "karol@test.com",
                         Specialization = "Kardiolog",
@@ -27,7 +27,7 @@ namespace Persistence
                     },
                     new AppUser
                     {
-                        DisplayName = "Krzysztof",
+                        DisplayName = "Krzysztof Nowak",
                         UserName = "krzysztof",
                         Email = "krzysztof@test.com",
                         Specialization = "Internista",
@@ -38,7 +38,7 @@ namespace Persistence
                     },
                     new AppUser
                     {
-                        DisplayName = "Paulina",
+                        DisplayName = "Paulina Kowalczyk",
                         UserName = "paulina",
                         Email = "paulina@test.com",
                         Specialization = "Lekarz rodzinny",
@@ -50,7 +50,7 @@ namespace Persistence
                     //Patients
                     new AppUser
                     {
-                        DisplayName = "Jan",
+                        DisplayName = "Jan Kowalski",
                         UserName = "jan",
                         Email = "jan@test.com",
                         Name = "Jan",
@@ -63,7 +63,7 @@ namespace Persistence
                     },
                     new AppUser
                     {
-                        DisplayName = "Anna",
+                        DisplayName = "Anna Nowak",
                         UserName = "anna",
                         Email = "anna@test.com",
                         Name = "Anna",
@@ -76,7 +76,7 @@ namespace Persistence
                     },
                     new AppUser
                     {
-                        DisplayName = "Piotr",
+                        DisplayName = "Piotr Kowalczyk",
                         UserName = "piotr",
                         Email = "piotr@test.com",
                         Name = "Piotr",

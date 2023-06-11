@@ -7,7 +7,7 @@ export interface Profile {
     displayName: string;
     image?: string;
     phoneNumber?: string;
-    isDoctor?: boolean;
+    isDoctor?: string;
 }
 
 export class Profile implements Profile {
