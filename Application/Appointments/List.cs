@@ -17,7 +17,7 @@ namespace Application.Appointments
     {
         public class Query : IRequest<Result<List<AppointmentDto>>>
         {
-            public string? UserId { get; set; }
+            public string UserId { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<AppointmentDto>>>

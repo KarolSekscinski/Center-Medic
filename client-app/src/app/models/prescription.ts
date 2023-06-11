@@ -8,8 +8,14 @@ export interface Prescription {
     doctorUsername: string;
     attendees: Profile[];
     validUntil: Date | null;
-    doctor?: Profile;
+    doctor: string;
+    patient: string;
     isDoctor: boolean;
+    isGoing: boolean;
+    isCancelled: boolean;
+    isDone: boolean;
+    doctorUserProfile?: Profile;
+    
 }
 
 export class Prescription implements Prescription {
@@ -24,6 +30,10 @@ export class PrescriptionFormValues {
     description: string = '';
     dateOfIssue: Date | null = null;
     validUntil: Date | null = null;
+    doctor: string = '';
+    attendees: Profile[] = [];
+    patient: string = '';
+
     constructor(prescription?: PrescriptionFormValues) {
         if (prescription) {
             this.id = prescription.id;

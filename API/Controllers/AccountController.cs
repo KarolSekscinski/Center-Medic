@@ -95,7 +95,7 @@ namespace API.Controllers
         [HttpGet("doctors")]
         public async Task<ActionResult<List<UserDto>>> GetDoctors()
         {
-            var users = await _userManager.Users.Where(u => u.IsDoctor == "true").ToListAsync();
+            var users = await _userManager.Users.Where(u => u.IsDoctor == true ).ToListAsync();
             var usersToReturn = new List<UserDto>();
             foreach (var user in users)
             {
@@ -113,7 +113,7 @@ namespace API.Controllers
         [HttpGet("patients")]
         public async Task<ActionResult<List<UserDto>>> GetPatients()
         {
-            var users = await _userManager.Users.Where(u => u.IsDoctor == "false").ToListAsync();
+            var users = await _userManager.Users.Where(u => u.IsDoctor == false).ToListAsync();
             var usersToReturn = new List<UserDto>();
             foreach (var user in users)
             {

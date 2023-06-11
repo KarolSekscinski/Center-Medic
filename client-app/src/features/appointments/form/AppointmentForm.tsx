@@ -24,6 +24,7 @@ export default observer(function AppointmentForm() {
     loading,
     loadAppointment,
     loadingInitial,
+    updateAttendance,
   } = appointmentStore;
 
   const { id } = useParams();
@@ -34,8 +35,7 @@ export default observer(function AppointmentForm() {
   const validationSchema = Yup.object({
     description: Yup.string().required("Opis wizyty jest wymagany."),
     dateOfIssue: Yup.string().required("Data wizyty jest wymagana."),
-    patient: Yup.string().required("Wybranie pacjenta jest wymagane."),
-    doctor: Yup.string().required("Wybranie lekarza jest wymagane."),
+    
     
     
   });
@@ -50,14 +50,23 @@ export default observer(function AppointmentForm() {
       let newAppointment = {
         ...appointment,
         id: uuid(),
-        doctor: appointment.doctor,
-        patient: appointment.patient,
+        
       };
+      console.log(newAppointment);
+      createAppointment(newAppointment).then(() => 
+         navigate(`/appointments/${newAppointment.id}`));
+
+        
+    
+    
       
-      createAppointment(newAppointment).then(() => navigate(`/appointments/${newAppointment.id}`));
     } else {
-      updateAppointment(appointment).then(() => navigate(`/appointments/${appointment.id}`));
+      updateAppointment(appointment).then(() => 
+        
+         navigate(`/appointments/${appointment.id}`)
+        );
     }
+    
 
   }
 
@@ -79,10 +88,10 @@ export default observer(function AppointmentForm() {
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
             <Header size="small" color="teal" content="Opis wizyty" />
             <MyTextArea rows={3} name="description" placeholder="Opis wizyty" />
-            <Header size="small" color="teal" content="Lekarz:" />
-            <DoctorsSelectInput  />
-            <Header size="small" color="teal" content="Pacjent:" />
-            <PatientsSelectInput />
+            {/* <Header size="small" color="teal" content="Lekarz:" />
+            <DoctorsSelectInput  /> */}
+            {/* <Header size="small" color="teal" content="Pacjent:" />
+            <PatientsSelectInput /> */}
             {/* <MySelectInput options={patientsOptions} placeholder="Pacjent" name="patient" /> */}
             
             <Header content="Termin wizyty" sub color="teal" />

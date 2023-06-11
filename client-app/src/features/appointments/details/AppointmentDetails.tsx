@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import AppointmentDetailedHeader from "./AppointmentDetailedHeader";
 import AppointmentDetailedInfo from "./AppointmentDetailedInfo";
 import Calendar from "react-calendar";
+import AppointmentDetailedSidebar from "./AppointmentDetailedSidebar";
 
 
 
@@ -31,6 +32,7 @@ export default observer(function AppointmentDetails() {
       </Grid.Column>
       <Grid.Column width={6} >
         <Calendar />
+        {/* <AppointmentDetailedSidebar appointment={appointment} /> */}
       </Grid.Column>
     </Grid>
   );

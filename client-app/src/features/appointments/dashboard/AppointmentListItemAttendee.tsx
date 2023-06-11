@@ -14,18 +14,19 @@ export default observer(function AppointmentListItemAttendee({
   attendees,
 }: Props) {
   
+  
   return (
     <List horizontal>
       {attendees.map((attendee) => (
         <Popup
           hoverable
-          key={attendee.username}
+          key={attendee.displayName}
           
           trigger={
             <List.Item
-              key={attendee.username}
+              key={attendee.displayName}
               as={Link}
-              to={`/profiles/${attendee.username}`}
+              to={`/profiles/${attendee.displayName}`}
             >
               <Image
                 size="mini"

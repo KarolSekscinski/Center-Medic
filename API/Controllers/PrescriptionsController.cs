@@ -12,12 +12,6 @@ namespace API.Controllers
     [AllowAnonymous]
     public class PrescriptionsController : BaseApiController
     {
-
-        [HttpGet] // api/prescriptions
-        public async Task<IActionResult> GetPrescriptions()
-        {
-            return HandleResult(await Mediator.Send(new List.Query()));
-        }
         [HttpGet("user/{userId}")] // api/prescriptions/user
         public async Task<IActionResult> GetPrescriptionsForUser(string userId)
         {

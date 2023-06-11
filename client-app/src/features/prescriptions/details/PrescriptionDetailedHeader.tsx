@@ -4,6 +4,7 @@ import { useStore } from "../../../app/stores/store";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
 
 const prescriptionImageStyle = {
     filter: 'brightness(30%)',
@@ -23,20 +24,34 @@ interface Props {
 }
 
 export default observer(function PrescriptionDetailedHeader({prescription}: Props) {
-    const {prescriptionStore: {updateAttendance, loading, cancelPrescriptionToggle}} = useStore();
-
+    const {prescriptionStore: {updateAttendance, loading, cancelPrescriptionToggle, deletePrescription}} = useStore();
+    const nr = prescription.id.split('-')[0].toLowerCase();
+    const [isDoctor, setIsDoctor] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const user = useStore().userStore.user;
+    useEffect(() => {
+        if (user?.isDoctor === 'true') {
+            setIsDoctor(true);
+        }
+    }, [user?.isDoctor]);
+    const cancelPrescriptionHandler = () => {
+        setIsDisabled(true);
+        prescription.isCancelled = true;
+        cancelPrescriptionToggle();
+    };
+    
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                {!prescription.status ? (
+                {prescription.status ? (
                     <Label
-                        style={{position: 'absolute', zIndex: 1000, left: -14, top: 20}}
+                        style={{position: 'absolute', zIndex: 1, left: -14, top: 20}}
                         ribbon color='orange'
                         content='Recepta w trakcie realizacji'
                     />
                 ) :
                 <Label
-                    style={{position: 'absolute', zIndex: 1000, left: -14, top: 20}}
+                    style={{position: 'absolute', zIndex: 1, left: -14, top: 20}}
                     ribbon color='grey'
                     content='Recepta zrealizowana'
                 />}
@@ -47,33 +62,53 @@ export default observer(function PrescriptionDetailedHeader({prescription}: Prop
                             <Item.Content>
                                 <Header
                                     size='medium'
-                                    content={`Recepta nr `}
+                                    content={`Recepta nr ${nr} `}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(prescription.dateOfIssue!, 'dd MMM yyyy')}</p>
                                 <p>
                                     Lekarz: {'Dr. '}
                                     <strong>
-                                        <Link to={`/profiles/${prescription.doctor?.username}`}>
-                                            {prescription.doctor?.displayName}
+                                        <Link to={`/profiles/${prescription.doctorUserProfile?.displayName}`}>
+                                            {prescription.doctorUserProfile?.displayName}
                                         </Link>
                                     </strong>
                                 </p>
-                                
-                            
                             </Item.Content>
                         </Item>
                     </Item.Group>
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                {prescription.status ? (
+                {isDoctor && prescription.status ? (
                     <>
-                        <p>TODO dodaj zarzadzanie recepta</p>
-                        <p>dodac przycisk zrealizowania recepty</p>
+                        <Button
+                            color={prescription.isCancelled ? 'green' : 'red'}
+                            floated='left'
+                            basic
+                            content={prescription.isCancelled ? 'Recepta zrealizowana' : 'Cofnij wydanie recepty'}
+                            onClick={cancelPrescriptionHandler}
+                            loading={loading}
+                            />
+                            <Button onClick={() => deletePrescription(prescription.id)} floated='right' color='red' content="Usuń receptę"/>
+                            <Button
+                                as={Link}
+                                to={`/managePrescription/${prescription.id}`}
+                                color='orange'
+                                floated='right'
+                                content='Edytuj receptę'
+                            />
                     </>
-                ) : null}
+                ) : prescription.isGoing ? (
+                    <Button loading={loading} onClick={cancelPrescriptionHandler} color='red'>
+                        Anuluj receptę    
+                    </Button > 
+                ) : (
+                    <Button loading={loading} onClick={cancelPrescriptionHandler} color='teal'>
+                        Anuluj receptę
+                    </Button>
+                )}
             </Segment>
         </Segment.Group>
-    )
+    );
 });

@@ -10,8 +10,9 @@ export interface Appointment {
     isDone: boolean;
     isGoing: boolean;
     isDoctor: boolean;
-    doctor?: Profile;
-    patient?: Profile;
+    doctor: string;
+    patient: string;
+    doctorUserProfile?: Profile;
 
   }
   export class Appointment implements Appointment {
@@ -25,8 +26,8 @@ export interface Appointment {
     id?: string = undefined;
     description: string = '';
     dateOfIssue: Date | null = null;
-    doctor?: Profile | undefined = undefined;
-    patient?: Profile | undefined = undefined;
+    doctor: string = '';
+    patient: string = '';
     attendees: Profile[] = [];
     constructor(appointment?: AppointmentFormValues) {
       if (appointment) {

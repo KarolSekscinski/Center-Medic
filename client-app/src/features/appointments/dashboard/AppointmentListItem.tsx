@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import AppointmentListItemAttendee from "./AppointmentListItemAttendee";
@@ -12,6 +12,15 @@ interface Props {
 }
 
 export default function AppointmentListItem({ appointment }: Props) {
+  const user = useStore().userStore.user;
+  const [isDoctor, setIsDoctor] = useState(false);
+  appointment.isDoctor = isDoctor;
+  useEffect(() => {
+    if (appointment.doctorUserProfile?.displayName === user?.displayName) {
+      
+      setIsDoctor(true);
+    } 
+  }, [appointment.doctorUserProfile?.displayName, user?.displayName]);
   return (
     <Segment.Group>
       <Segment>
@@ -26,7 +35,7 @@ export default function AppointmentListItem({ appointment }: Props) {
         <Item.Group>
           <Item>
             <Item.Image
-              style={{ marginBottom: 3 }}
+              style={{ marginBottom: 5 }}
               size="tiny"
               circular
               src="/assets/lekarz-ikona.png"
@@ -35,15 +44,15 @@ export default function AppointmentListItem({ appointment }: Props) {
               <Item.Header as={Link} to={`/appointments/${appointment.id}`}>
                 {`Wizyta ${format(appointment.dateOfIssue!, "dd MMM yyyy")}`}
               </Item.Header>
-              <Item.Description>{`Lekarz: ${appointment.doctor?.displayName}`}</Item.Description>
-              {appointment.isDoctor && (
+              <Item.Description>{`Lekarz: ${appointment.doctorUserProfile?.displayName}`}</Item.Description>
+              {isDoctor && (
                 <Item.Description>
                   <Label basic color="orange">
                     Ty jesteś lekarzem
                   </Label>
                 </Item.Description>
               )}
-              {appointment.isGoing && !appointment.isDoctor && (
+              {!isDoctor && !appointment.isDoctor && (
                 <Item.Description>
                   <Label basic color="green">
                     Ty jesteś pacjentem

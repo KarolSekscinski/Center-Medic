@@ -22,7 +22,8 @@ namespace Persistence
                         Name = "Karol",
                         Surname = "Kowalski",
                         PhoneNumber = "123456789",
-                        IsDoctor = "true"   
+                        IsDoctor = true 
+                        
                     },
                     new AppUser
                     {
@@ -33,7 +34,7 @@ namespace Persistence
                         Name = "Krzysztof",
                         Surname = "Nowak",
                         PhoneNumber = "123456789",
-                        IsDoctor = "true"   
+                        IsDoctor = true 
                     },
                     new AppUser
                     {
@@ -44,7 +45,7 @@ namespace Persistence
                         Name = "Paulina",
                         Surname = "Kowalczyk",
                         PhoneNumber = "123456789",
-                        IsDoctor = "true"   
+                        IsDoctor = true 
                     },
                     //Patients
                     new AppUser
@@ -58,7 +59,7 @@ namespace Persistence
                         Pesel = "12345678901",
                         DateOfBirth = DateTime.UtcNow.AddYears(-20),
                         Sex = "M",
-                        IsDoctor = "false"   
+                        IsDoctor = false   
                     },
                     new AppUser
                     {
@@ -71,7 +72,7 @@ namespace Persistence
                         Pesel = "12345678901",
                         DateOfBirth = DateTime.UtcNow.AddYears(-40),
                         Sex = "K",
-                        IsDoctor = "false" 
+                        IsDoctor = false 
                     },
                     new AppUser
                     {
@@ -83,7 +84,7 @@ namespace Persistence
                         PhoneNumber = "123456789",
                         Pesel = "12345678901",
                         DateOfBirth = DateTime.UtcNow.AddYears(-60),
-                        IsDoctor = "false" 
+                        IsDoctor = false
                     }
                 };
 

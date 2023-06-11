@@ -38,11 +38,16 @@ export default observer(function PrescriptionForm() {
 
     function handleFormSubmit(prescription: PrescriptionFormValues) {
         if(!prescription.id) {
+            console.log(prescription);
             let newPrescription = {
                 ...prescription,
                 id: uuid(),
+                doctor: prescription.doctor,
+                patient: prescription.patient,
+                
                 
             };
+            console.log(newPrescription);
             createPrescription(newPrescription).then(() => navigate(`/prescriptions/${newPrescription.id}`));
         } else {
             updatePrescription(prescription).then(() => navigate(`/prescriptions/${prescription.id}`));

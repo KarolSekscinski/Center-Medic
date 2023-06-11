@@ -17,6 +17,7 @@ namespace Application.Appointments
         public class Command : IRequest<Result<Unit>>
         {
             public Appointment Appointment { get; set; }
+
         }
 
         public class CommandValidator : AbstractValidator<Command>
@@ -43,7 +44,7 @@ namespace Application.Appointments
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x =>
                     x.UserName == _userAccessor.GetUsername());
-
+                
                 var attendee = new AppointmentAttendee
                 {
                     AppUser = user,
@@ -51,9 +52,15 @@ namespace Application.Appointments
                     IsDoctor = true,
                     
                 };
+
+                
                 request.Appointment.Attendees.Add(attendee);
+
+                
             
                 _context.Appointments.Add(request.Appointment);
+
+                
 
                 var result = await _context.SaveChangesAsync() > 0;
 

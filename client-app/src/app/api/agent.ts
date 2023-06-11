@@ -75,7 +75,8 @@ const request = {
 };
 
 const Appointments = {
-  list: (userId: string) => request.get<Appointment[]>(`/appointments/user/${userId}`),
+  list: (userId: string) =>
+    request.get<Appointment[]>(`/appointments/user/${userId}`),
   details: (id: string) => request.get<Appointment>(`/appointments/${id}`),
   create: (appointment: AppointmentFormValues) =>
     request.post<void>(`/appointments`, appointment),
@@ -86,7 +87,8 @@ const Appointments = {
 };
 
 const Prescriptions = {
-  list: (userId: string) => request.get<Prescription[]>(`/prescriptions/user/${userId}`),
+  list: (userId: string) =>
+    request.get<Prescription[]>(`/prescriptions/user/${userId}`),
   details: (id: string) => request.get<Prescription>(`/prescriptions/${id}`),
   create: (prescription: PrescriptionFormValues) =>
     request.post<void>(`/prescriptions`, prescription),
@@ -94,7 +96,7 @@ const Prescriptions = {
     request.put<void>(`/prescriptions/${prescription.id}`, prescription),
   delete: (id: string) => request.delete<void>(`/prescriptions/${id}`),
   attend: (id: string) => request.post<void>(`/prescriptions/${id}/take`, {}),
-}
+};
 
 const Account = {
   current: () => request.get<User>("/account"),

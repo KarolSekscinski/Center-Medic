@@ -14,7 +14,7 @@ namespace Application.Prescriptions
     public class List
     {
         public class Query : IRequest<Result<List<PrescriptionDto>>> {
-            public string? UserId { get; set; }
+            public string UserId { get; set; }
          }
 
         public class Handler : IRequestHandler<Query, Result<List<PrescriptionDto>>>

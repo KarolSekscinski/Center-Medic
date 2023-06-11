@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default observer(function AppointmentDetailedSidebar({
-  appointment: { attendees, doctor },
+  appointment: { attendees, doctorUserProfile },
 }: Props) {
   if (!attendees) return null;
   return (
@@ -28,8 +28,8 @@ export default observer(function AppointmentDetailedSidebar({
       <Segment attached>
         <List relaxed divided>
           {attendees.map((attendee) => (
-            <Item style={{ position: "relative" }} key={attendee.username}>
-              {attendee.username === doctor?.username && (
+            <Item style={{ position: "relative" }} key={attendee.displayName}>
+              {attendee.displayName === doctorUserProfile?.displayName && (
                 <Label
                   style={{ position: "absolute" }}
                   color="orange"

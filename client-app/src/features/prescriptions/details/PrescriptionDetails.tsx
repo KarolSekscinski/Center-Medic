@@ -6,6 +6,7 @@ import { Grid } from "semantic-ui-react";
 import PrescriptionDetailedInfo from "./PrescriptionDetailedInfo";
 import PrescriptionDetailedHeader from "./PrescriptionDetailedHeader";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import Calendar from "react-calendar";
 
 
 export default observer(function PrescriptionDetails() {
@@ -27,9 +28,10 @@ export default observer(function PrescriptionDetails() {
                 <PrescriptionDetailedInfo prescription={prescription} />
 
             </Grid.Column>
-            {/* <Grid.Column width={6} >
-                <PrescriptionDetailedSidebar prescription={prescription} />
-            </Grid.Column> */}
+            <Grid.Column width={6} >
+                <Calendar />
+                {/* <PrescriptionDetailedSidebar prescription={prescription} /> */}
+            </Grid.Column>
         </Grid>
     );
 });

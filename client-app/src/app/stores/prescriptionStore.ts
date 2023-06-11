@@ -77,7 +77,7 @@ export default class PrescriptionStore {
         const user = store.userStore.user;
         if (user) {
             prescription.isDoctor = prescription.doctorUsername === user.username;
-            prescription.doctor = prescription.attendees?.find(
+            prescription.doctorUserProfile = prescription.attendees?.find(
                 a => a.username === prescription.doctorUsername
             );
         }

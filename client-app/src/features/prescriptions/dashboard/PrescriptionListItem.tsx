@@ -9,29 +9,33 @@ import {
 import { Prescription } from "../../../app/models/prescription";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import App from "../../../app/layout/App";
-import { Appointment } from "../../../app/models/appointment";
-import AppointmentListItemAttendee from "../../appointments/dashboard/AppointmentListItemAttendee";
-import UserStore from "../../../app/stores/userStore";
 import { useStore } from "../../../app/stores/store";
+import { useEffect, useState } from "react";
 
 interface Props {
   prescription: Prescription;
 }
 
 export default function PrescriptionListItem({ prescription }: Props) {
-  const { userStore } = useStore();
-  const { user } = userStore;
-  const doctor = prescription.doctor?.displayName;
+  
+  const {userStore: {user} } = useStore();
+  const [isDoctor, setIsDoctor] = useState(false);
+  prescription.isDoctor = isDoctor;
+  const doctor = prescription.doctorUserProfile?.displayName;
+  const nr = prescription.id.split('-')[0].toLowerCase();
+  useEffect(() => {
+    if (prescription.doctorUserProfile?.displayName === user?.displayName) {
+      console.log("jestem lekarzem");
+      setIsDoctor(true);
+    }
+  }, [prescription.doctorUserProfile?.displayName, user?.displayName]);
 
-  if (doctor === user?.name) {
-    console.log(doctor);
-    console.log("jestem lekarzem");
-  }
+  
+  
   return (
     <SegmentGroup>
       <Segment>
-        {prescription && (
+        {!prescription.isCancelled && (
           <Label
             attached="top"
             color={prescription.status ? "orange" : "grey"}
@@ -43,16 +47,17 @@ export default function PrescriptionListItem({ prescription }: Props) {
         <Item.Group>
           <Item>
             <Item.Image
-              style={{ marginBottom: 3 }}
+              style={{ marginBottom: 5 }}
               size="tiny"
               circular
               src="/assets/lekarz-ikona.png"
             />
             <Item.Content>
               <Item.Header as={Link} to={`/prescriptions/${prescription.id}`}>
-                {`Recepta`}
+                {`Recepta nr ${nr} z dnia ${format(
+                  prescription.dateOfIssue!,  "dd MMM yyyy")}`}
               </Item.Header>
-              <Item.Description>{`Lekarz: ${prescription.doctor?.displayName}`}</Item.Description>
+              <Item.Description>{`Lekarz: ${prescription.doctorUserProfile?.displayName}`}</Item.Description>
               {prescription.isDoctor && (
                 <Item.Description>
                   <Label basic color="orange">

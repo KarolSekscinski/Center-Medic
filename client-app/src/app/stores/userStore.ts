@@ -20,10 +20,10 @@ export default class UserStore {
       const user = await agent.Account.login(creds);
 
       store.commonStore.setToken(user.token);
-      runInAction(() => (this.user = user));
-      this.user!.isDoctor = user.isDoctor;
+      runInAction(() => (this.user = user,this.user!.isDoctor = user.isDoctor,this.user!.appUserId= user.appUserId ));
       
-      this.user!.appUserId= user.appUserId;
+      console.log(this.user!.isDoctor);
+      
 
       router.navigate("/");
       store.modalStore.closeModal();
