@@ -13,7 +13,9 @@ namespace Application.Prescriptions
 {
     public class List
     {
-        public class Query : IRequest<Result<List<PrescriptionDto>>> { }
+        public class Query : IRequest<Result<List<PrescriptionDto>>> {
+            public string? UserId { get; set; }
+         }
 
         public class Handler : IRequestHandler<Query, Result<List<PrescriptionDto>>>
         {
@@ -30,6 +32,8 @@ namespace Application.Prescriptions
             public async Task<Result<List<PrescriptionDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var appointments = await _context.Prescriptions
+                    .Include(x => x.Attendees)
+                    .Where(x => (request.UserId != null) ? x.Attendees.Any(a => a.AppUserId == request.UserId) : true )
                     .ProjectTo<PrescriptionDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 

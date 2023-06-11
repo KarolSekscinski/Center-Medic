@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class PrescriptionsController : BaseApiController
     {
 
@@ -16,6 +17,11 @@ namespace API.Controllers
         public async Task<IActionResult> GetPrescriptions()
         {
             return HandleResult(await Mediator.Send(new List.Query()));
+        }
+        [HttpGet("user/{userId}")] // api/prescriptions/user
+        public async Task<IActionResult> GetPrescriptionsForUser(string userId)
+        {
+            return HandleResult(await Mediator.Send(new List.Query{UserId = userId}));
         }
 
         [HttpGet("{id}")] // api/prescriptions/id
