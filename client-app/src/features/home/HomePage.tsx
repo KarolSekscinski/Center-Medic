@@ -25,7 +25,7 @@ export default observer(function HomePage() {
             <Button as={Link} to={`/appointments/user/${userStore.user?.appUserId}`} size="huge" inverted>
               Przejdź do swoich wizyt
             </Button>
-            <Button as={Link} to="/prescriptions" size="huge" inverted>
+            <Button as={Link} to={`/prescriptions/user/${userStore.user?.appUserId}`} size="huge" inverted>
               Przejdź do swoich recept
             </Button>
           </>

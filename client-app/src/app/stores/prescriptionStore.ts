@@ -31,9 +31,12 @@ export default class PrescriptionStore {
     }
 
     loadPrescriptions = async () => {
+        const {getUser} = store.userStore;
+        getUser();
+        const {user} = store.userStore;
         this.setLoadingInitial(true);
         try {
-            const prescriptions = await agent.Prescriptions.list();
+            const prescriptions = await agent.Prescriptions.list(user!.appUserId);
 
             prescriptions.forEach((prescription) => {
                 this.setPrescription(prescription);

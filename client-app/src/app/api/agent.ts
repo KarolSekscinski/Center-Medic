@@ -86,7 +86,7 @@ const Appointments = {
 };
 
 const Prescriptions = {
-  list: () => request.get<Prescription[]>("/prescriptions"),
+  list: (userId: string) => request.get<Prescription[]>(`/prescriptions/user/${userId}`),
   details: (id: string) => request.get<Prescription>(`/prescriptions/${id}`),
   create: (prescription: PrescriptionFormValues) =>
     request.post<void>(`/prescriptions`, prescription),

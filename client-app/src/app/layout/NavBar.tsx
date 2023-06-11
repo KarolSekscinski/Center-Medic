@@ -26,7 +26,7 @@ export default observer(function NavBar() {
             <Button positive content="Zaplanuj wizytę" />
           </Menu.Item>
         
-        <Menu.Item as={NavLink} to="/prescriptions" name="Recepty" />
+        <Menu.Item as={NavLink} to={`/prescriptions/user/${user?.appUserId}`} name="Recepty" />
         {user?.isDoctor === "true" && (
           <Menu.Item as={NavLink} to="/createPrescription">
             <Button positive content="Wystaw receptę" />

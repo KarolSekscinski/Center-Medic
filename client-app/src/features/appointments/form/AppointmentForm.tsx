@@ -18,6 +18,7 @@ import { patientsOptions } from "../../../app/common/options/patientsOptions";
 
 export default observer(function AppointmentForm() {
   const { appointmentStore } = useStore();
+  const { userStore: { user } } = useStore();
   const {
     createAppointment,
     updateAppointment,
@@ -99,7 +100,7 @@ export default observer(function AppointmentForm() {
             />
             <Button
               as={Link}
-              to="/appointments"
+              to={`/appointments/user/${user?.appUserId}`}
               floated="right"
               type="button"
               content="Anuluj"
