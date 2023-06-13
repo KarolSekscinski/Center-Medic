@@ -89,9 +89,13 @@ export default observer(function ActivityDetailedHeader({
                   </strong>
                   
                 </p>
-                <p>
+                {patient?.displayName && (
+                  <p>
                   Pacjent: {`${patient?.displayName}`}
                 </p>
+                
+)}
+                
               </Item.Content>
             </Item>
           </Item.Group>

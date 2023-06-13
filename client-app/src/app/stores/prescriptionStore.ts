@@ -141,8 +141,8 @@ export default class PrescriptionStore {
         }
     }
 
-    updateAttendance = async () => {
-        const user = store.userStore.user;
+    updateAttendance = async (userId: string) => {
+        const user = store.userStore.patients.find(x => x.appUserId === userId);
         this.loading = true;
         try {
             await agent.Prescriptions.attend(this.selectedPrescription!.id);

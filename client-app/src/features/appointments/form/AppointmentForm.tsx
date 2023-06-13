@@ -55,14 +55,8 @@ export default observer(function AppointmentForm() {
       console.log(newAppointment);
       createAppointment(newAppointment).then(() => 
          navigate(`/appointments/${newAppointment.id}`));
-
-        
-    
-    
-      
     } else {
       updateAppointment(appointment).then(() => 
-        
          navigate(`/appointments/${appointment.id}`)
         );
     }

@@ -26,10 +26,10 @@ export default observer(function PrescriptionForm() {
     const validationSchema = Yup.object({
         description: Yup.string().required("Opis recepty jest wymagany."),
         dateOfIssue: Yup.string().required("Data wystawienia recepty jest wymagana."),
-        expirationDate: Yup.string().required("Data ważności recepty jest wymagana."),
+        validUntil: Yup.string().required("Data ważności recepty jest wymagana."),
         
-        patient: Yup.string().required("Wybranie pacjenta jest wymagane."),
-        doctor: Yup.string().required("Wybranie lekarza jest wymagane."),
+        
+        
     });
 
     useEffect(() => {
@@ -44,6 +44,7 @@ export default observer(function PrescriptionForm() {
                 id: uuid(),
                 doctor: prescription.doctor,
                 patient: prescription.patient,
+                
                 
                 
             };
@@ -72,11 +73,11 @@ export default observer(function PrescriptionForm() {
                         <Header size="small" color="teal" content="Data wystawienia" />
                         <MyDateInput name='dateOfIssue' placeholderText='Data wystawienia' showTimeSelect timeCaption="time" dateFormat="MMMM d, yyyy h:mm aa" />
                         <Header size="small" color="teal" content="Data ważności" />
-                        <MyDateInput name='expirationDate' placeholderText='Data ważności' showTimeSelect timeCaption="time" dateFormat="MMMM d, yyyy h:mm aa" />
-                        <Header size="small" color="teal" content="Lekarz:" />
+                        <MyDateInput name='validUntil' placeholderText='Data ważności' showTimeSelect timeCaption="time" dateFormat="MMMM d, yyyy h:mm aa" />
+                        {/* <Header size="small" color="teal" content="Lekarz:" />
                         <DoctorsSelectInput />
                         <Header size="small" color="teal" content="Pacjent:" />
-                        <PatientsSelectInput />
+                        <PatientsSelectInput /> */}
                         
                         <Button
                             disabled={isSubmitting || !dirty || !isValid}
